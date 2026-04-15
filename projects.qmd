@@ -1,0 +1,6 @@
+---
+title: "Projects"
+listing:
+  contents: posts
+  type: grid
+---
