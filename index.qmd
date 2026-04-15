@@ -1,5 +1,5 @@
 ---
-title: "cd mywebsite"
+title: "My Website"
 ---
 
 This is a Quarto website.
