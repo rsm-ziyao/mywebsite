@@ -14,7 +14,7 @@ format:
 
 Imagine you run a website with a landing page that invites visitors to subscribe to your newsletter. The page features a prominent "call to action" (CTA) — a short phrase designed to encourage sign-ups. You have been using the CTA **"Sign up for our newsletter here!"** (let's call this CTA A), but a colleague suggests that **"Stay up to date by signing up!"** (CTA B) might perform better.
 
-Which one actually leads to more sign-ups? Gut feelings and opinions won't settle this — we need data. The standard approach is to run an **A/B test**: randomly assign each visitor to see one of the two CTAs, then compare the sign-up rates between the two groups. Because visitors are randomly assigned, any difference in sign-up rates can be attributed to the CTA itself rather than to differences in the visitors.
+Which one actually leads to more sign-ups? Gut feelings and opinions won't settle this — we need data. The standard approach is to run an **A/B test**: randomly assign each visitor to see one of the two CTAs, then compare the sign-up rates between the two groups. Because visitors are randomly assigned, any difference in sign-up rates can be attributed to the CTA itself rather than to differences in the visitors. This framework allows us to isolate the causal effect of the CTA by ensuring that differences in outcomes are driven only by the treatment.
 
 In this post, we will walk through the statistical foundations behind A/B testing by simulating an experiment from scratch. Along the way, we will explore the Law of Large Numbers, bootstrapping, the Central Limit Theorem, hypothesis testing, the connection between t-tests and regression, and the dangers of peeking at results too early.
 
@@ -149,6 +149,7 @@ This confidence interval tells us that, based on our data, we are 95% confident 
 ## The Central Limit Theorem
 
 The **Central Limit Theorem** (CLT) is one of the most important results in statistics. It states that regardless of the shape of the underlying population distribution, the sampling distribution of the sample mean — and therefore of the difference in sample means — becomes approximately Normal as the sample size grows. This is remarkable because our data are Bernoulli (just 0s and 1s), yet the distribution of $\hat\theta$ looks increasingly like a bell curve.
+In practice, this justifies using normal-based inference methods even when the underlying data are binary.
 
 Let's demonstrate this by simulating 1,000 experiments at four different sample sizes:
 
@@ -167,7 +168,7 @@ for idx, sz in enumerate(sample_sizes):
         sim_a = np.random.binomial(1, pi_A, size=sz)
         sim_b = np.random.binomial(1, pi_B, size=sz)
         theta_estimates[i] = sim_a.mean() - sim_b.mean()
-    
+
     axes[idx].hist(theta_estimates, bins=30, color="#2c7bb6", edgecolor="white", alpha=0.85, density=True)
     axes[idx].axvline(x=theta_true, color="#d7191c", linestyle="--", linewidth=1.5, label=f"True θ = {theta_true}")
     axes[idx].set_title(f"n = {sz}", fontsize=13, fontweight="bold")
@@ -296,21 +297,21 @@ for _ in range(n_experiments):
     # Simulate full experiment under H0
     sim_a = np.random.binomial(1, 0.20, size=1000)
     sim_b = np.random.binomial(1, 0.20, size=1000)
-    
+
     any_significant = False
     for peek_n in peek_points:
         p_a = sim_a[:peek_n].mean()
         p_b = sim_b[:peek_n].mean()
         theta_peek = p_a - p_b
         se_peek = np.sqrt(p_a * (1 - p_a) / peek_n + p_b * (1 - p_b) / peek_n)
-        
+
         if se_peek > 0:
             z_peek = theta_peek / se_peek
             p_val = 2 * (1 - stats.norm.cdf(abs(z_peek)))
             if p_val < 0.05:
                 any_significant = True
                 break
-    
+
     if any_significant:
         false_positive_count += 1
 
