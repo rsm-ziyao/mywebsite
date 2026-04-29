@@ -143,7 +143,7 @@ print(f"Point estimate θ̂: {theta_hat:.4f}")
 print(f"95% Confidence interval: [{ci_lower:.4f}, {ci_upper:.4f}]")
 ```
 
-This confidence interval tells us that, based on our data, we are 95% confident that the true difference in sign-up rates between CTA A and CTA B falls within this range. If the interval does not contain zero, that is initial evidence that there is a real difference between the two CTAs.
+This confidence interval tells us that, based on our data, we are 95% confident that the true difference in sign-up rates between CTA A and CTA B falls within this range. If the interval does not contain zero, that is initial evidence that there is a real difference between the two CTAs. One advantage of the bootstrap is that it does not require deriving a closed-form formula for the standard error, which can be difficult in more complex settings.
 
 
 ## The Central Limit Theorem
@@ -167,7 +167,7 @@ for idx, sz in enumerate(sample_sizes):
         sim_a = np.random.binomial(1, pi_A, size=sz)
         sim_b = np.random.binomial(1, pi_B, size=sz)
         theta_estimates[i] = sim_a.mean() - sim_b.mean()
-    
+
     axes[idx].hist(theta_estimates, bins=30, color="#2c7bb6", edgecolor="white", alpha=0.85, density=True)
     axes[idx].axvline(x=theta_true, color="#d7191c", linestyle="--", linewidth=1.5, label=f"True θ = {theta_true}")
     axes[idx].set_title(f"n = {sz}", fontsize=13, fontweight="bold")
@@ -182,7 +182,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-The progression across these four panels is striking. At $n = 25$, the histogram looks jagged and irregular — far from a smooth bell curve. By $n = 50$ and $n = 100$, the shape is already becoming smoother and more symmetric. At $n = 500$, the distribution is tightly concentrated around the true $\theta = 0.04$ and closely resembles a Normal distribution. This is the CLT in action: even though our underlying data are binary, the sampling distribution of $\hat\theta$ becomes approximately Normal as the sample size increases.
+The progression across these four panels is striking. At $n = 25$, the histogram looks jagged and irregular — far from a smooth bell curve. By $n = 50$ and $n = 100$, the shape is already becoming smoother and more symmetric. At $n = 500$, the distribution is tightly concentrated around the true $\theta = 0.04$ and closely resembles a Normal distribution. This is the CLT in action: even though our underlying data are binary, the sampling distribution of $\hat\theta$ becomes approximately Normal as the sample size increases. This result is crucial because it allows us to use Normal-based inference, such as confidence intervals and hypothesis tests, even when the underlying data are not normally distributed.
 
 
 ## Hypothesis Testing
@@ -228,6 +228,17 @@ else:
     print(f"At the α = {alpha} level, we fail to reject H₀. The data do not provide sufficient evidence to conclude that the two CTAs produce different sign-up rates.")
 ```
 
+## Practical Interpretation
+
+While statistical significance tells us whether the difference is likely to be real, it does not tell us whether the difference is meaningful in practice.
+
+In our example, even if the difference in sign-up rates is statistically significant, a 4 percentage point increase (from 18% to 22%) should be evaluated in terms of business impact. For instance:
+
+- How many additional users does this translate to?
+- Does it justify the cost of implementing the new CTA?
+- Are there downstream effects (e.g., retention, engagement)?
+
+This highlights the difference between statistical significance and practical significance — both are important in decision-making.
 
 ## The T-Test as a Regression
 
@@ -296,21 +307,21 @@ for _ in range(n_experiments):
     # Simulate full experiment under H0
     sim_a = np.random.binomial(1, 0.20, size=1000)
     sim_b = np.random.binomial(1, 0.20, size=1000)
-    
+
     any_significant = False
     for peek_n in peek_points:
         p_a = sim_a[:peek_n].mean()
         p_b = sim_b[:peek_n].mean()
         theta_peek = p_a - p_b
         se_peek = np.sqrt(p_a * (1 - p_a) / peek_n + p_b * (1 - p_b) / peek_n)
-        
+
         if se_peek > 0:
             z_peek = theta_peek / se_peek
             p_val = 2 * (1 - stats.norm.cdf(abs(z_peek)))
             if p_val < 0.05:
                 any_significant = True
                 break
-    
+
     if any_significant:
         false_positive_count += 1
 

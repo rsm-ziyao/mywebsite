@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.37">
+<meta name="generator" content="quarto-1.9.36">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Zihui Yao">
-<meta name="dcterms.date" content="2026-04-22">
+<meta name="dcterms.date" content="2026-04-28">
 
 <title>Replication of Angrist and Lavy (1999) – My Website</title>
 <style>
@@ -76,7 +76,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
@@ -215,7 +215,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">April 22, 2026</p>
+      <p class="date">April 28, 2026</p>
     </div>
   </div>
   
@@ -237,7 +237,7 @@ window.Quarto = {
 <section id="data-and-sample-construction" class="level2">
 <h2 class="anchored" data-anchor-id="data-and-sample-construction">Data and Sample Construction</h2>
 <p>The data come from the 1991 Israeli national testing program, which administered reading and math tests to all 4th and 5th graders in Jewish public schools. The unit of observation is the class. Following the authors’ do files, I apply these cleaning steps: fix scores above 100 (a known coding error), drop classes with fewer than 2 or more than 44 students, restrict to schools with enrollment above 5, limit to Jewish public schools (<code>c_leom == 1</code> and <code>c_pik &lt; 3</code>), and set test scores to missing when no students in the class took a given test. The predicted class size from Maimonides’ rule is <span class="math inline">\(f_{sc} = e_s / [\text{int}((e_s - 1)/40) + 1]\)</span>, where <span class="math inline">\(e_s\)</span> is September enrollment.</p>
-<div id="1d4c5b60" class="cell" data-execution_count="2">
+<div id="a177fb1a" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
