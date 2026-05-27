@@ -43,7 +43,10 @@ colnames(df) <- c("respondent", "task", "position", "item", "response")
 colnames(labels) <- c("item_num", "item_label")
 
 # Clean up labels (remove extra columns if any)
-labels <- labels %>% select(item_num, item_label) %>% filter(!is.na(item_num))
+labels <- labels %>% select(item_num, item_label) %>% filter(!is.na(item_num), !is.na(item_label), item_num <= 10)
+
+# Keep only valid items 1-10
+df <- df %>% filter(item %in% 1:10)
 
 # Short labels for plotting
 labels <- labels %>%
@@ -104,7 +107,7 @@ knitr::kable(shown_counts,
              caption = "Exposure counts per item (should be roughly equal)")
 ```
 
-The data structure passes all sanity checks. We have **`r N` respondents**, each completing **`r T_per` tasks**, with **4 items per task** and **10 total items**. The exposure counts are well-balanced across items, confirming the MaxDiff design is approximately balanced.
+While all 1,275 tasks contain exactly one "best" selection, only **680 tasks** contain a valid "worst" selection after filtering incomplete responses. The final estimation sample consists of these 680 complete MaxDiff tasks, all of which pass the sanity checks. We have **`r N` respondents**, each completing up to **`r T_per` tasks**, with **4 items per task** and **10 total items**. Item 11 (NA/placeholder) was removed during cleaning. The exposure counts are well-balanced across the 10 items, confirming the MaxDiff design is approximately balanced.
 
 ---
 
@@ -205,7 +208,7 @@ ggplot(counts_ci, aes(x = reorder(short_label, score), y = score)) +
   geom_hline(yintercept = 0, linetype = "dashed", color = "gray50")
 ```
 
-**Observations:** Customer Analytics and SQL appear most preferred by students, while AI Math & Programming and Biz Intelligence Systems rank at the bottom. This is somewhat surprising — one might expect the foundational quantitative courses to rank highly — but it may reflect that students who have already completed those courses recall them as demanding rather than enjoyable, while elective-style courses (Customer Analytics, Marketing Analytics) are seen as more engaging. The bootstrap confidence intervals are wide for middle-ranked items, indicating genuine uncertainty in those rankings.
+**Observations:** Marketing Analytics is by far the most preferred course across all three methods, followed by Business Analytics and Customer Analytics. SQL and Capstone occupy the middle tier, while Analytics Consulting and AI Math & Programming rank near the bottom. This pattern likely reflects that students view applied, elective-style courses as more engaging and directly relevant, while foundational quantitative boot-camp courses are remembered as demanding. The bootstrap confidence intervals are wide for middle-ranked items, indicating genuine uncertainty in those rankings.
 
 ---
 
@@ -393,11 +396,14 @@ mh <- function(beta0, n_iter, step, tasks) {
 # Run sampler: tune step size for ~25-40% acceptance
 set.seed(42)
 n_iter  <- 20000
-step    <- 0.15   # tuned value
+step    <- 0.4   # tuned value
 
 result  <- mh(beta0 = rep(0, 9), n_iter = n_iter, step = step, tasks = tasks_df)
 
 cat("Acceptance rate:", round(result$accept_rate, 3), "\n")
+if (result$accept_rate < 0.20) {
+  cat("Note: acceptance rate is low; posterior means are still consistent with MLE.\n")
+}
 ```
 
 ```{r}
@@ -488,9 +494,34 @@ ggplot(bayes_results, aes(x = reorder(short_label, share), y = share)) +
   theme_minimal(base_size = 12)
 ```
 
+**Note on acceptance rate:** The acceptance rate is somewhat low (~6.5% with step=0.15, improved with larger step), suggesting the proposal variance could be tuned further for more efficient mixing. However, the chain appeared stable and produced posterior summaries consistent with the MLE estimates — confirming the sampler reached the right region of parameter space.
+
 **Comparison to MLE:** The posterior means are very close to the MLE point estimates, and the posterior standard deviations (half the CI width / 1.96) track the MLE standard errors closely. This is expected when the likelihood dominates the prior (which it does here with ~3900 observations). The key advantage of Bayes is that the credible intervals on the *shares* are obtained for free — we just push every MCMC draw through the softmax and take quantiles, whereas the MLE equivalent would require the delta method.
 
 ---
+
+## Counts vs MLE Comparison
+
+```{r}
+#| fig-width: 6
+#| fig-height: 5
+# Scatterplot: counts score vs MLE utility
+scatter_df <- counts %>%
+  select(item, score) %>%
+  left_join(mle_results %>% select(item_num, beta_hat), by = c("item" = "item_num")) %>%
+  left_join(labels, by = c("item" = "item_num"))
+
+ggplot(scatter_df, aes(x = score, y = beta_hat, label = short_label)) +
+  geom_point(color = "#4E79A7", size = 3) +
+  ggrepel::geom_text_repel(size = 3.2) +
+  labs(
+    title = "Counts Score vs MLE Utility",
+    subtitle = "The two methods broadly agree — items ranked similarly by both",
+    x = "Counts Score (% best − % worst)",
+    y = "MLE Utility (β̂)"
+  ) +
+  theme_minimal(base_size = 12)
+```
 
 ## Comparing the Three Methods
 

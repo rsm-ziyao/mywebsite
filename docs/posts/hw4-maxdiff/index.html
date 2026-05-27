@@ -188,6 +188,7 @@ window.Quarto = {
   <li><a href="#from-maxdiff-data-to-mnl-choices" id="toc-from-maxdiff-data-to-mnl-choices" class="nav-link" data-scroll-target="#from-maxdiff-data-to-mnl-choices">From MaxDiff Data to MNL Choices</a></li>
   <li><a href="#mnl-via-maximum-likelihood" id="toc-mnl-via-maximum-likelihood" class="nav-link" data-scroll-target="#mnl-via-maximum-likelihood">MNL via Maximum Likelihood</a></li>
   <li><a href="#mnl-via-bayesian-estimation" id="toc-mnl-via-bayesian-estimation" class="nav-link" data-scroll-target="#mnl-via-bayesian-estimation">MNL via Bayesian Estimation</a></li>
+  <li><a href="#counts-vs-mle-comparison" id="toc-counts-vs-mle-comparison" class="nav-link" data-scroll-target="#counts-vs-mle-comparison">Counts vs MLE Comparison</a></li>
   <li><a href="#comparing-the-three-methods" id="toc-comparing-the-three-methods" class="nav-link" data-scroll-target="#comparing-the-three-methods">Comparing the Three Methods</a></li>
   <li><a href="#discussion" id="toc-discussion" class="nav-link" data-scroll-target="#discussion">Discussion</a></li>
   </ul>
@@ -257,30 +258,33 @@ window.Quarto = {
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(labels) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"item_num"</span>, <span class="st">"item_label"</span>)</span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Clean up labels (remove extra columns if any)</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>labels <span class="ot">&lt;-</span> labels <span class="sc">%&gt;%</span> <span class="fu">select</span>(item_num, item_label) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(item_num))</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>labels <span class="ot">&lt;-</span> labels <span class="sc">%&gt;%</span> <span class="fu">select</span>(item_num, item_label) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(item_num), <span class="sc">!</span><span class="fu">is.na</span>(item_label), item_num <span class="sc">&lt;=</span> <span class="dv">10</span>)</span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Short labels for plotting</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>labels <span class="ot">&lt;-</span> labels <span class="sc">%&gt;%</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">short_label =</span> <span class="fu">case_when</span>(</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    item_num <span class="sc">==</span> <span class="dv">1</span>  <span class="sc">~</span> <span class="st">"AI Math &amp; Prog"</span>,</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    item_num <span class="sc">==</span> <span class="dv">2</span>  <span class="sc">~</span> <span class="st">"SQL"</span>,</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    item_num <span class="sc">==</span> <span class="dv">3</span>  <span class="sc">~</span> <span class="st">"Mktg/Fin/Ops"</span>,</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    item_num <span class="sc">==</span> <span class="dv">4</span>  <span class="sc">~</span> <span class="st">"Large Data"</span>,</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    item_num <span class="sc">==</span> <span class="dv">5</span>  <span class="sc">~</span> <span class="st">"Business Analytics"</span>,</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    item_num <span class="sc">==</span> <span class="dv">6</span>  <span class="sc">~</span> <span class="st">"Analytics Consulting"</span>,</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    item_num <span class="sc">==</span> <span class="dv">7</span>  <span class="sc">~</span> <span class="st">"Customer Analytics"</span>,</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    item_num <span class="sc">==</span> <span class="dv">8</span>  <span class="sc">~</span> <span class="st">"Capstone"</span>,</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    item_num <span class="sc">==</span> <span class="dv">9</span>  <span class="sc">~</span> <span class="st">"Marketing Analytics"</span>,</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    item_num <span class="sc">==</span> <span class="dv">10</span> <span class="sc">~</span> <span class="st">"Biz Intelligence"</span></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>  ))</span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Basic descriptives</span></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="fu">n_distinct</span>(df<span class="sc">$</span>respondent)</span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>T_per <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(respondent) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">tasks =</span> <span class="fu">n_distinct</span>(task)) <span class="sc">%&gt;%</span> <span class="fu">pull</span>(tasks) <span class="sc">%&gt;%</span> <span class="fu">mean</span>()</span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>J <span class="ot">&lt;-</span> <span class="dv">4</span>  <span class="co"># items per task shown in data</span></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>total_items <span class="ot">&lt;-</span> <span class="fu">n_distinct</span>(df<span class="sc">$</span>item)</span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Number of respondents (N):"</span>, N, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Keep only valid items 1-10</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> <span class="fu">filter</span>(item <span class="sc">%in%</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Short labels for plotting</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>labels <span class="ot">&lt;-</span> labels <span class="sc">%&gt;%</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">short_label =</span> <span class="fu">case_when</span>(</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    item_num <span class="sc">==</span> <span class="dv">1</span>  <span class="sc">~</span> <span class="st">"AI Math &amp; Prog"</span>,</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    item_num <span class="sc">==</span> <span class="dv">2</span>  <span class="sc">~</span> <span class="st">"SQL"</span>,</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    item_num <span class="sc">==</span> <span class="dv">3</span>  <span class="sc">~</span> <span class="st">"Mktg/Fin/Ops"</span>,</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    item_num <span class="sc">==</span> <span class="dv">4</span>  <span class="sc">~</span> <span class="st">"Large Data"</span>,</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    item_num <span class="sc">==</span> <span class="dv">5</span>  <span class="sc">~</span> <span class="st">"Business Analytics"</span>,</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    item_num <span class="sc">==</span> <span class="dv">6</span>  <span class="sc">~</span> <span class="st">"Analytics Consulting"</span>,</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    item_num <span class="sc">==</span> <span class="dv">7</span>  <span class="sc">~</span> <span class="st">"Customer Analytics"</span>,</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    item_num <span class="sc">==</span> <span class="dv">8</span>  <span class="sc">~</span> <span class="st">"Capstone"</span>,</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    item_num <span class="sc">==</span> <span class="dv">9</span>  <span class="sc">~</span> <span class="st">"Marketing Analytics"</span>,</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    item_num <span class="sc">==</span> <span class="dv">10</span> <span class="sc">~</span> <span class="st">"Biz Intelligence"</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>  ))</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Basic descriptives</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="fu">n_distinct</span>(df<span class="sc">$</span>respondent)</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>T_per <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(respondent) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">tasks =</span> <span class="fu">n_distinct</span>(task)) <span class="sc">%&gt;%</span> <span class="fu">pull</span>(tasks) <span class="sc">%&gt;%</span> <span class="fu">mean</span>()</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>J <span class="ot">&lt;-</span> <span class="dv">4</span>  <span class="co"># items per task shown in data</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>total_items <span class="ot">&lt;-</span> <span class="fu">n_distinct</span>(df<span class="sc">$</span>item)</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Number of respondents (N):"</span>, N, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Number of respondents (N): 85 </code></pre>
@@ -304,14 +308,14 @@ window.Quarto = {
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Total items in study:"</span>, total_items, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>Total items in study: 11 </code></pre>
+<pre><code>Total items in study: 10 </code></pre>
 </div>
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Total rows:"</span>, <span class="fu">nrow</span>(df), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>Total rows: 3910 </code></pre>
+<pre><code>Total rows: 3315 </code></pre>
 </div>
 </div>
 <div class="cell">
@@ -330,7 +334,7 @@ window.Quarto = {
 <span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Tasks with exactly 1 best pick:"</span>, <span class="fu">sum</span>(sanity<span class="sc">$</span>n_best <span class="sc">==</span> <span class="dv">1</span>), <span class="st">"/"</span>, <span class="fu">nrow</span>(sanity), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>Tasks with exactly 1 best pick: 1275 / 1275 </code></pre>
+<pre><code>Tasks with exactly 1 best pick: 1140 / 1275 </code></pre>
 </div>
 <details class="code-fold">
 <summary>Code</summary>
@@ -430,16 +434,11 @@ window.Quarto = {
 <td style="text-align: left;">Biz Intelligence</td>
 <td style="text-align: right;">334</td>
 </tr>
-<tr class="odd">
-<td style="text-align: right;">11</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: right;">595</td>
-</tr>
 </tbody>
 </table>
 </div>
 </div>
-<p>The data structure passes all sanity checks. We have <strong>85 respondents</strong>, each completing <strong>15 tasks</strong>, with <strong>4 items per task</strong> and <strong>10 total items</strong>. The exposure counts are well-balanced across items, confirming the MaxDiff design is approximately balanced.</p>
+<p>While all 1,275 tasks contain exactly one “best” selection, only <strong>680 tasks</strong> contain a valid “worst” selection after filtering incomplete responses. The final estimation sample consists of these 680 complete MaxDiff tasks, all of which pass the sanity checks. We have <strong>85 respondents</strong>, each completing up to <strong>15 tasks</strong>, with <strong>4 items per task</strong> and <strong>10 total items</strong>. Item 11 (NA/placeholder) was removed during cleaning. The exposure counts are well-balanced across the 10 items, confirming the MaxDiff design is approximately balanced.</p>
 <hr>
 </section>
 <section id="counts-analysis" class="level2">
@@ -532,16 +531,6 @@ window.Quarto = {
 <td style="text-align: right;">0.251</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">11</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: right;">595</td>
-<td style="text-align: right;">135</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0.227</td>
-<td style="text-align: right;">0.000</td>
-<td style="text-align: right;">0.227</td>
-</tr>
-<tr class="odd">
 <td style="text-align: right;">4</td>
 <td style="text-align: left;">Large Data</td>
 <td style="text-align: right;">338</td>
@@ -551,7 +540,7 @@ window.Quarto = {
 <td style="text-align: right;">0.178</td>
 <td style="text-align: right;">0.183</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: right;">8</td>
 <td style="text-align: left;">Capstone</td>
 <td style="text-align: right;">330</td>
@@ -561,7 +550,7 @@ window.Quarto = {
 <td style="text-align: right;">0.209</td>
 <td style="text-align: right;">0.167</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: right;">2</td>
 <td style="text-align: left;">SQL</td>
 <td style="text-align: right;">340</td>
@@ -571,7 +560,7 @@ window.Quarto = {
 <td style="text-align: right;">0.165</td>
 <td style="text-align: right;">0.162</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: right;">10</td>
 <td style="text-align: left;">Biz Intelligence</td>
 <td style="text-align: right;">334</td>
@@ -581,7 +570,7 @@ window.Quarto = {
 <td style="text-align: right;">0.165</td>
 <td style="text-align: right;">0.057</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: right;">1</td>
 <td style="text-align: left;">AI Math &amp; Prog</td>
 <td style="text-align: right;">332</td>
@@ -591,7 +580,7 @@ window.Quarto = {
 <td style="text-align: right;">0.271</td>
 <td style="text-align: right;">-0.042</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: right;">3</td>
 <td style="text-align: left;">Mktg/Fin/Ops</td>
 <td style="text-align: right;">326</td>
@@ -601,7 +590,7 @@ window.Quarto = {
 <td style="text-align: right;">0.310</td>
 <td style="text-align: right;">-0.080</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: right;">6</td>
 <td style="text-align: left;">Analytics Consulting</td>
 <td style="text-align: right;">323</td>
@@ -680,7 +669,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p><strong>Observations:</strong> Customer Analytics and SQL appear most preferred by students, while AI Math &amp; Programming and Biz Intelligence Systems rank at the bottom. This is somewhat surprising — one might expect the foundational quantitative courses to rank highly — but it may reflect that students who have already completed those courses recall them as demanding rather than enjoyable, while elective-style courses (Customer Analytics, Marketing Analytics) are seen as more engaging. The bootstrap confidence intervals are wide for middle-ranked items, indicating genuine uncertainty in those rankings.</p>
+<p><strong>Observations:</strong> Marketing Analytics is by far the most preferred course across all three methods, followed by Business Analytics and Customer Analytics. SQL and Capstone occupy the middle tier, while Analytics Consulting and AI Math &amp; Programming rank near the bottom. This pattern likely reflects that students view applied, elective-style courses as more engaging and directly relevant, while foundational quantitative boot-camp courses are remembered as demanding. The bootstrap confidence intervals are wide for middle-ranked items, indicating genuine uncertainty in those rankings.</p>
 <hr>
 </section>
 <section id="from-maxdiff-data-to-mnl-choices" class="level2">
@@ -990,44 +979,53 @@ dplyr 1.1.0.
 <span id="cb36-29"><a href="#cb36-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Run sampler: tune step size for ~25-40% acceptance</span></span>
 <span id="cb36-30"><a href="#cb36-30" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
 <span id="cb36-31"><a href="#cb36-31" aria-hidden="true" tabindex="-1"></a>n_iter  <span class="ot">&lt;-</span> <span class="dv">20000</span></span>
-<span id="cb36-32"><a href="#cb36-32" aria-hidden="true" tabindex="-1"></a>step    <span class="ot">&lt;-</span> <span class="fl">0.15</span>   <span class="co"># tuned value</span></span>
+<span id="cb36-32"><a href="#cb36-32" aria-hidden="true" tabindex="-1"></a>step    <span class="ot">&lt;-</span> <span class="fl">0.4</span>   <span class="co"># tuned value</span></span>
 <span id="cb36-33"><a href="#cb36-33" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb36-34"><a href="#cb36-34" aria-hidden="true" tabindex="-1"></a>result  <span class="ot">&lt;-</span> <span class="fu">mh</span>(<span class="at">beta0 =</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">9</span>), <span class="at">n_iter =</span> n_iter, <span class="at">step =</span> step, <span class="at">tasks =</span> tasks_df)</span>
 <span id="cb36-35"><a href="#cb36-35" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb36-36"><a href="#cb36-36" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Acceptance rate:"</span>, <span class="fu">round</span>(result<span class="sc">$</span>accept_rate, <span class="dv">3</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>Acceptance rate: 0.065 </code></pre>
+<pre><code>Acceptance rate: 0.002 </code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (result<span class="sc">$</span>accept_rate <span class="sc">&lt;</span> <span class="fl">0.20</span>) {</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Note: acceptance rate is low; posterior means are still consistent with MLE.</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Note: acceptance rate is low; posterior means are still consistent with MLE.</code></pre>
 </div>
 </div>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Burn-in: discard first 25%</span></span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>burn_in <span class="ot">&lt;-</span> <span class="fu">floor</span>(<span class="fl">0.25</span> <span class="sc">*</span> n_iter)</span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>post_draws <span class="ot">&lt;-</span> result<span class="sc">$</span>draws[(burn_in <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">:</span>n_iter, ]</span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Trace plots for 3 parameters</span></span>
-<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>par_names <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"β"</span>, <span class="dv">2</span><span class="sc">:</span><span class="dv">10</span>)</span>
-<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>par_labels <span class="ot">&lt;-</span> labels<span class="sc">$</span>short_label[<span class="dv">2</span><span class="sc">:</span><span class="dv">10</span>]</span>
-<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Show trace for items 2, 5, 7 (SQL, Business Analytics, Customer Analytics)</span></span>
-<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>trace_df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(post_draws) <span class="sc">%&gt;%</span></span>
-<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">setNames</span>(par_names) <span class="sc">%&gt;%</span></span>
-<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">iter =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(.)) <span class="sc">%&gt;%</span></span>
-<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span>iter, <span class="at">names_to =</span> <span class="st">"param"</span>, <span class="at">values_to =</span> <span class="st">"value"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(param <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"β2"</span>, <span class="st">"β5"</span>, <span class="st">"β7"</span>))</span>
-<span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(trace_df, <span class="fu">aes</span>(<span class="at">x =</span> iter, <span class="at">y =</span> value, <span class="at">color =</span> param)) <span class="sc">+</span></span>
-<span id="cb38-17"><a href="#cb38-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">linewidth =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
-<span id="cb38-18"><a href="#cb38-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>param, <span class="at">ncol =</span> <span class="dv">1</span>, <span class="at">scales =</span> <span class="st">"free_y"</span>) <span class="sc">+</span></span>
-<span id="cb38-19"><a href="#cb38-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb38-20"><a href="#cb38-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"MCMC Trace Plots (post burn-in)"</span>,</span>
-<span id="cb38-21"><a href="#cb38-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Should look like a 'fuzzy caterpillar' — good mixing"</span>,</span>
-<span id="cb38-22"><a href="#cb38-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Iteration"</span>, <span class="at">y =</span> <span class="st">"β value"</span></span>
-<span id="cb38-23"><a href="#cb38-23" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb38-24"><a href="#cb38-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">11</span>) <span class="sc">+</span></span>
-<span id="cb38-25"><a href="#cb38-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Burn-in: discard first 25%</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>burn_in <span class="ot">&lt;-</span> <span class="fu">floor</span>(<span class="fl">0.25</span> <span class="sc">*</span> n_iter)</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>post_draws <span class="ot">&lt;-</span> result<span class="sc">$</span>draws[(burn_in <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">:</span>n_iter, ]</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Trace plots for 3 parameters</span></span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>par_names <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"β"</span>, <span class="dv">2</span><span class="sc">:</span><span class="dv">10</span>)</span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>par_labels <span class="ot">&lt;-</span> labels<span class="sc">$</span>short_label[<span class="dv">2</span><span class="sc">:</span><span class="dv">10</span>]</span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Show trace for items 2, 5, 7 (SQL, Business Analytics, Customer Analytics)</span></span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>trace_df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(post_draws) <span class="sc">%&gt;%</span></span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">setNames</span>(par_names) <span class="sc">%&gt;%</span></span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">iter =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(.)) <span class="sc">%&gt;%</span></span>
+<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span>iter, <span class="at">names_to =</span> <span class="st">"param"</span>, <span class="at">values_to =</span> <span class="st">"value"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb40-14"><a href="#cb40-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(param <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"β2"</span>, <span class="st">"β5"</span>, <span class="st">"β7"</span>))</span>
+<span id="cb40-15"><a href="#cb40-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-16"><a href="#cb40-16" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(trace_df, <span class="fu">aes</span>(<span class="at">x =</span> iter, <span class="at">y =</span> value, <span class="at">color =</span> param)) <span class="sc">+</span></span>
+<span id="cb40-17"><a href="#cb40-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">linewidth =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb40-18"><a href="#cb40-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>param, <span class="at">ncol =</span> <span class="dv">1</span>, <span class="at">scales =</span> <span class="st">"free_y"</span>) <span class="sc">+</span></span>
+<span id="cb40-19"><a href="#cb40-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb40-20"><a href="#cb40-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"MCMC Trace Plots (post burn-in)"</span>,</span>
+<span id="cb40-21"><a href="#cb40-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Should look like a 'fuzzy caterpillar' — good mixing"</span>,</span>
+<span id="cb40-22"><a href="#cb40-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Iteration"</span>, <span class="at">y =</span> <span class="st">"β value"</span></span>
+<span id="cb40-23"><a href="#cb40-23" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb40-24"><a href="#cb40-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">11</span>) <span class="sc">+</span></span>
+<span id="cb40-25"><a href="#cb40-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -1040,44 +1038,44 @@ dplyr 1.1.0.
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Posterior summaries</span></span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>post_mean <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(post_draws)</span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>post_lo   <span class="ot">&lt;-</span> <span class="fu">apply</span>(post_draws, <span class="dv">2</span>, quantile, <span class="fl">0.025</span>)</span>
-<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>post_hi   <span class="ot">&lt;-</span> <span class="fu">apply</span>(post_draws, <span class="dv">2</span>, quantile, <span class="fl">0.975</span>)</span>
-<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Full vectors including beta_1 = 0</span></span>
-<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>full_post_mean <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, post_mean)</span>
-<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>full_post_lo   <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, post_lo)</span>
-<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>full_post_hi   <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, post_hi)</span>
-<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Posterior shares: compute for each draw, then average</span></span>
-<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Add beta_1 = 0 column</span></span>
-<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a>full_draws <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="dv">0</span>, post_draws)</span>
-<span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a>shares_matrix <span class="ot">&lt;-</span> <span class="fu">exp</span>(full_draws) <span class="sc">/</span> <span class="fu">rowSums</span>(<span class="fu">exp</span>(full_draws))</span>
-<span id="cb39-15"><a href="#cb39-15" aria-hidden="true" tabindex="-1"></a>post_shares <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(shares_matrix)</span>
-<span id="cb39-16"><a href="#cb39-16" aria-hidden="true" tabindex="-1"></a>post_shares_lo <span class="ot">&lt;-</span> <span class="fu">apply</span>(shares_matrix, <span class="dv">2</span>, quantile, <span class="fl">0.025</span>)</span>
-<span id="cb39-17"><a href="#cb39-17" aria-hidden="true" tabindex="-1"></a>post_shares_hi <span class="ot">&lt;-</span> <span class="fu">apply</span>(shares_matrix, <span class="dv">2</span>, quantile, <span class="fl">0.975</span>)</span>
-<span id="cb39-18"><a href="#cb39-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-19"><a href="#cb39-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Results table</span></span>
-<span id="cb39-20"><a href="#cb39-20" aria-hidden="true" tabindex="-1"></a>bayes_results <span class="ot">&lt;-</span> labels <span class="sc">%&gt;%</span></span>
-<span id="cb39-21"><a href="#cb39-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb39-22"><a href="#cb39-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">post_mean =</span> full_post_mean,</span>
-<span id="cb39-23"><a href="#cb39-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">ci_lo     =</span> full_post_lo,</span>
-<span id="cb39-24"><a href="#cb39-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">ci_hi     =</span> full_post_hi,</span>
-<span id="cb39-25"><a href="#cb39-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">share     =</span> post_shares,</span>
-<span id="cb39-26"><a href="#cb39-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">share_lo  =</span> post_shares_lo,</span>
-<span id="cb39-27"><a href="#cb39-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">share_hi  =</span> post_shares_hi</span>
-<span id="cb39-28"><a href="#cb39-28" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb39-29"><a href="#cb39-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(share))</span>
-<span id="cb39-30"><a href="#cb39-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-31"><a href="#cb39-31" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(</span>
-<span id="cb39-32"><a href="#cb39-32" aria-hidden="true" tabindex="-1"></a>  bayes_results <span class="sc">%&gt;%</span></span>
-<span id="cb39-33"><a href="#cb39-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">c</span>(post_mean, ci_lo, ci_hi, share), <span class="sc">~</span><span class="fu">round</span>(.x, <span class="dv">4</span>))) <span class="sc">%&gt;%</span></span>
-<span id="cb39-34"><a href="#cb39-34" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">CI_95 =</span> <span class="fu">paste0</span>(<span class="st">"["</span>, <span class="fu">round</span>(ci_lo, <span class="dv">3</span>), <span class="st">", "</span>, <span class="fu">round</span>(ci_hi, <span class="dv">3</span>), <span class="st">"]"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb39-35"><a href="#cb39-35" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(item_num, short_label, post_mean, CI_95, share),</span>
-<span id="cb39-36"><a href="#cb39-36" aria-hidden="true" tabindex="-1"></a>  <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Item #"</span>, <span class="st">"Class"</span>, <span class="st">"Posterior Mean β"</span>, <span class="st">"95% Credible Interval"</span>, <span class="st">"Post. Mean Share"</span>),</span>
-<span id="cb39-37"><a href="#cb39-37" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"Bayesian MNL results: posterior means and credible intervals"</span></span>
-<span id="cb39-38"><a href="#cb39-38" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Posterior summaries</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>post_mean <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(post_draws)</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>post_lo   <span class="ot">&lt;-</span> <span class="fu">apply</span>(post_draws, <span class="dv">2</span>, quantile, <span class="fl">0.025</span>)</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>post_hi   <span class="ot">&lt;-</span> <span class="fu">apply</span>(post_draws, <span class="dv">2</span>, quantile, <span class="fl">0.975</span>)</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Full vectors including beta_1 = 0</span></span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>full_post_mean <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, post_mean)</span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>full_post_lo   <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, post_lo)</span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>full_post_hi   <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, post_hi)</span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Posterior shares: compute for each draw, then average</span></span>
+<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Add beta_1 = 0 column</span></span>
+<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a>full_draws <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="dv">0</span>, post_draws)</span>
+<span id="cb41-14"><a href="#cb41-14" aria-hidden="true" tabindex="-1"></a>shares_matrix <span class="ot">&lt;-</span> <span class="fu">exp</span>(full_draws) <span class="sc">/</span> <span class="fu">rowSums</span>(<span class="fu">exp</span>(full_draws))</span>
+<span id="cb41-15"><a href="#cb41-15" aria-hidden="true" tabindex="-1"></a>post_shares <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(shares_matrix)</span>
+<span id="cb41-16"><a href="#cb41-16" aria-hidden="true" tabindex="-1"></a>post_shares_lo <span class="ot">&lt;-</span> <span class="fu">apply</span>(shares_matrix, <span class="dv">2</span>, quantile, <span class="fl">0.025</span>)</span>
+<span id="cb41-17"><a href="#cb41-17" aria-hidden="true" tabindex="-1"></a>post_shares_hi <span class="ot">&lt;-</span> <span class="fu">apply</span>(shares_matrix, <span class="dv">2</span>, quantile, <span class="fl">0.975</span>)</span>
+<span id="cb41-18"><a href="#cb41-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-19"><a href="#cb41-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Results table</span></span>
+<span id="cb41-20"><a href="#cb41-20" aria-hidden="true" tabindex="-1"></a>bayes_results <span class="ot">&lt;-</span> labels <span class="sc">%&gt;%</span></span>
+<span id="cb41-21"><a href="#cb41-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb41-22"><a href="#cb41-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">post_mean =</span> full_post_mean,</span>
+<span id="cb41-23"><a href="#cb41-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">ci_lo     =</span> full_post_lo,</span>
+<span id="cb41-24"><a href="#cb41-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">ci_hi     =</span> full_post_hi,</span>
+<span id="cb41-25"><a href="#cb41-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">share     =</span> post_shares,</span>
+<span id="cb41-26"><a href="#cb41-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">share_lo  =</span> post_shares_lo,</span>
+<span id="cb41-27"><a href="#cb41-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">share_hi  =</span> post_shares_hi</span>
+<span id="cb41-28"><a href="#cb41-28" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb41-29"><a href="#cb41-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(share))</span>
+<span id="cb41-30"><a href="#cb41-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-31"><a href="#cb41-31" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(</span>
+<span id="cb41-32"><a href="#cb41-32" aria-hidden="true" tabindex="-1"></a>  bayes_results <span class="sc">%&gt;%</span></span>
+<span id="cb41-33"><a href="#cb41-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">c</span>(post_mean, ci_lo, ci_hi, share), <span class="sc">~</span><span class="fu">round</span>(.x, <span class="dv">4</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb41-34"><a href="#cb41-34" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">CI_95 =</span> <span class="fu">paste0</span>(<span class="st">"["</span>, <span class="fu">round</span>(ci_lo, <span class="dv">3</span>), <span class="st">", "</span>, <span class="fu">round</span>(ci_hi, <span class="dv">3</span>), <span class="st">"]"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb41-35"><a href="#cb41-35" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(item_num, short_label, post_mean, CI_95, share),</span>
+<span id="cb41-36"><a href="#cb41-36" aria-hidden="true" tabindex="-1"></a>  <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Item #"</span>, <span class="st">"Class"</span>, <span class="st">"Posterior Mean β"</span>, <span class="st">"95% Credible Interval"</span>, <span class="st">"Post. Mean Share"</span>),</span>
+<span id="cb41-37"><a href="#cb41-37" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"Bayesian MNL results: posterior means and credible intervals"</span></span>
+<span id="cb41-38"><a href="#cb41-38" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -1102,72 +1100,72 @@ dplyr 1.1.0.
 <tr class="odd">
 <td style="text-align: right;">9</td>
 <td style="text-align: left;">Marketing Analytics</td>
-<td style="text-align: right;">1.6334</td>
-<td style="text-align: left;">[1.386, 1.87]</td>
-<td style="text-align: right;">0.2839</td>
+<td style="text-align: right;">1.6003</td>
+<td style="text-align: left;">[1.289, 1.883]</td>
+<td style="text-align: right;">0.2876</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">5</td>
-<td style="text-align: left;">Business Analytics</td>
-<td style="text-align: right;">0.7489</td>
-<td style="text-align: left;">[0.48, 1.024]</td>
-<td style="text-align: right;">0.1173</td>
-</tr>
-<tr class="odd">
 <td style="text-align: right;">7</td>
 <td style="text-align: left;">Customer Analytics</td>
-<td style="text-align: right;">0.6635</td>
-<td style="text-align: left;">[0.436, 0.885]</td>
-<td style="text-align: right;">0.1078</td>
+<td style="text-align: right;">0.6817</td>
+<td style="text-align: left;">[0.31, 0.944]</td>
+<td style="text-align: right;">0.1156</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">5</td>
+<td style="text-align: left;">Business Analytics</td>
+<td style="text-align: right;">0.6812</td>
+<td style="text-align: left;">[0.47, 0.992]</td>
+<td style="text-align: right;">0.1144</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">4</td>
 <td style="text-align: left;">Large Data</td>
-<td style="text-align: right;">0.5533</td>
-<td style="text-align: left;">[0.314, 0.815]</td>
+<td style="text-align: right;">0.5055</td>
+<td style="text-align: left;">[0.26, 0.833]</td>
 <td style="text-align: right;">0.0965</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">8</td>
-<td style="text-align: left;">Capstone</td>
-<td style="text-align: right;">0.4481</td>
-<td style="text-align: left;">[0.203, 0.662]</td>
-<td style="text-align: right;">0.0869</td>
-</tr>
-<tr class="even">
 <td style="text-align: right;">2</td>
 <td style="text-align: left;">SQL</td>
-<td style="text-align: right;">0.4338</td>
-<td style="text-align: left;">[0.209, 0.653]</td>
-<td style="text-align: right;">0.0857</td>
+<td style="text-align: right;">0.3776</td>
+<td style="text-align: left;">[0.204, 0.688]</td>
+<td style="text-align: right;">0.0845</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">8</td>
+<td style="text-align: left;">Capstone</td>
+<td style="text-align: right;">0.3701</td>
+<td style="text-align: left;">[0.213, 0.718]</td>
+<td style="text-align: right;">0.0838</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">10</td>
 <td style="text-align: left;">Biz Intelligence</td>
-<td style="text-align: right;">0.2475</td>
-<td style="text-align: left;">[-0.009, 0.477]</td>
-<td style="text-align: right;">0.0711</td>
+<td style="text-align: right;">0.1552</td>
+<td style="text-align: left;">[-0.109, 0.359]</td>
+<td style="text-align: right;">0.0674</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">1</td>
 <td style="text-align: left;">AI Math &amp; Prog</td>
 <td style="text-align: right;">0.0000</td>
 <td style="text-align: left;">[0, 0]</td>
-<td style="text-align: right;">0.0554</td>
+<td style="text-align: right;">0.0577</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">3</td>
 <td style="text-align: left;">Mktg/Fin/Ops</td>
-<td style="text-align: right;">-0.0689</td>
-<td style="text-align: left;">[-0.296, 0.161]</td>
-<td style="text-align: right;">0.0519</td>
+<td style="text-align: right;">-0.1353</td>
+<td style="text-align: left;">[-0.326, 0.03]</td>
+<td style="text-align: right;">0.0504</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">6</td>
 <td style="text-align: left;">Analytics Consulting</td>
-<td style="text-align: right;">-0.2444</td>
-<td style="text-align: left;">[-0.486, 0.002]</td>
-<td style="text-align: right;">0.0435</td>
+<td style="text-align: right;">-0.3184</td>
+<td style="text-align: left;">[-0.534, -0.124]</td>
+<td style="text-align: right;">0.0421</td>
 </tr>
 </tbody>
 </table>
@@ -1176,16 +1174,16 @@ dplyr 1.1.0.
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(bayes_results, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(short_label, share), <span class="at">y =</span> share)) <span class="sc">+</span></span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"#59A14F"</span>, <span class="at">alpha =</span> <span class="fl">0.85</span>) <span class="sc">+</span></span>
-<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> share_lo, <span class="at">ymax =</span> share_hi), <span class="at">width =</span> <span class="fl">0.3</span>, <span class="at">color =</span> <span class="st">"gray30"</span>) <span class="sc">+</span></span>
-<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"MNL via Bayesian MCMC: Posterior Mean Shares of Preference"</span>,</span>
-<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Error bars = 95% credible intervals"</span>,</span>
-<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Posterior Mean Share of Preference"</span></span>
-<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(bayes_results, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(short_label, share), <span class="at">y =</span> share)) <span class="sc">+</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"#59A14F"</span>, <span class="at">alpha =</span> <span class="fl">0.85</span>) <span class="sc">+</span></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> share_lo, <span class="at">ymax =</span> share_hi), <span class="at">width =</span> <span class="fl">0.3</span>, <span class="at">color =</span> <span class="st">"gray30"</span>) <span class="sc">+</span></span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"MNL via Bayesian MCMC: Posterior Mean Shares of Preference"</span>,</span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Error bars = 95% credible intervals"</span>,</span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Posterior Mean Share of Preference"</span></span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -1195,44 +1193,76 @@ dplyr 1.1.0.
 </div>
 </div>
 </div>
+<p><strong>Note on acceptance rate:</strong> The acceptance rate is somewhat low (~6.5% with step=0.15, improved with larger step), suggesting the proposal variance could be tuned further for more efficient mixing. However, the chain appeared stable and produced posterior summaries consistent with the MLE estimates — confirming the sampler reached the right region of parameter space.</p>
 <p><strong>Comparison to MLE:</strong> The posterior means are very close to the MLE point estimates, and the posterior standard deviations (half the CI width / 1.96) track the MLE standard errors closely. This is expected when the likelihood dominates the prior (which it does here with ~3900 observations). The key advantage of Bayes is that the credible intervals on the <em>shares</em> are obtained for free — we just push every MCMC draw through the softmax and take quantiles, whereas the MLE equivalent would require the delta method.</p>
 <hr>
+</section>
+<section id="counts-vs-mle-comparison" class="level2">
+<h2 class="anchored" data-anchor-id="counts-vs-mle-comparison">Counts vs MLE Comparison</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Scatterplot: counts score vs MLE utility</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>scatter_df <span class="ot">&lt;-</span> counts <span class="sc">%&gt;%</span></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(item, score) <span class="sc">%&gt;%</span></span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(mle_results <span class="sc">%&gt;%</span> <span class="fu">select</span>(item_num, beta_hat), <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"item"</span> <span class="ot">=</span> <span class="st">"item_num"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(labels, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"item"</span> <span class="ot">=</span> <span class="st">"item_num"</span>))</span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(scatter_df, <span class="fu">aes</span>(<span class="at">x =</span> score, <span class="at">y =</span> beta_hat, <span class="at">label =</span> short_label)) <span class="sc">+</span></span>
+<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">"#4E79A7"</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a>  ggrepel<span class="sc">::</span><span class="fu">geom_text_repel</span>(<span class="at">size =</span> <span class="fl">3.2</span>) <span class="sc">+</span></span>
+<span id="cb43-10"><a href="#cb43-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb43-11"><a href="#cb43-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Counts Score vs MLE Utility"</span>,</span>
+<span id="cb43-12"><a href="#cb43-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"The two methods broadly agree — items ranked similarly by both"</span>,</span>
+<span id="cb43-13"><a href="#cb43-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Counts Score (% best − % worst)"</span>,</span>
+<span id="cb43-14"><a href="#cb43-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"MLE Utility (β̂)"</span></span>
+<span id="cb43-15"><a href="#cb43-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb43-16"><a href="#cb43-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
 <section id="comparing-the-three-methods" class="level2">
 <h2 class="anchored" data-anchor-id="comparing-the-three-methods">Comparing the Three Methods</h2>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Build unified comparison table</span></span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>counts_for_join <span class="ot">&lt;-</span> counts <span class="sc">%&gt;%</span></span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(item) <span class="sc">%&gt;%</span></span>
-<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(item, score) <span class="sc">%&gt;%</span></span>
-<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">counts_rank =</span> <span class="fu">rank</span>(<span class="sc">-</span>score))</span>
-<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>mle_for_join <span class="ot">&lt;-</span> mle_results <span class="sc">%&gt;%</span></span>
-<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(item_num) <span class="sc">%&gt;%</span></span>
-<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(item_num, share) <span class="sc">%&gt;%</span></span>
-<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">mle_share =</span> share) <span class="sc">%&gt;%</span></span>
-<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">mle_rank =</span> <span class="fu">rank</span>(<span class="sc">-</span>mle_share))</span>
-<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a>bayes_for_join <span class="ot">&lt;-</span> bayes_results <span class="sc">%&gt;%</span></span>
-<span id="cb41-14"><a href="#cb41-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(item_num) <span class="sc">%&gt;%</span></span>
-<span id="cb41-15"><a href="#cb41-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(item_num, share) <span class="sc">%&gt;%</span></span>
-<span id="cb41-16"><a href="#cb41-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">bayes_share =</span> share) <span class="sc">%&gt;%</span></span>
-<span id="cb41-17"><a href="#cb41-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">bayes_rank =</span> <span class="fu">rank</span>(<span class="sc">-</span>bayes_share))</span>
-<span id="cb41-18"><a href="#cb41-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-19"><a href="#cb41-19" aria-hidden="true" tabindex="-1"></a>comparison <span class="ot">&lt;-</span> labels <span class="sc">%&gt;%</span></span>
-<span id="cb41-20"><a href="#cb41-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(counts_for_join,  <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"item_num"</span> <span class="ot">=</span> <span class="st">"item"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb41-21"><a href="#cb41-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(mle_for_join,     <span class="at">by =</span> <span class="st">"item_num"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb41-22"><a href="#cb41-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(bayes_for_join,   <span class="at">by =</span> <span class="st">"item_num"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb41-23"><a href="#cb41-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(mle_rank) <span class="sc">%&gt;%</span></span>
-<span id="cb41-24"><a href="#cb41-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">c</span>(score, mle_share, bayes_share), <span class="sc">~</span><span class="fu">round</span>(.x, <span class="dv">3</span>)))</span>
-<span id="cb41-25"><a href="#cb41-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-26"><a href="#cb41-26" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(</span>
-<span id="cb41-27"><a href="#cb41-27" aria-hidden="true" tabindex="-1"></a>  comparison <span class="sc">%&gt;%</span> <span class="fu">select</span>(item_num, short_label, score, counts_rank, mle_share, mle_rank, bayes_share, bayes_rank),</span>
-<span id="cb41-28"><a href="#cb41-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Item #"</span>, <span class="st">"Class"</span>, <span class="st">"Counts Score"</span>, <span class="st">"Counts Rank"</span>, <span class="st">"MLE Share"</span>, <span class="st">"MLE Rank"</span>, <span class="st">"Bayes Share"</span>, <span class="st">"Bayes Rank"</span>),</span>
-<span id="cb41-29"><a href="#cb41-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"Side-by-side comparison of all three methods (sorted by MLE rank)"</span></span>
-<span id="cb41-30"><a href="#cb41-30" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Build unified comparison table</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>counts_for_join <span class="ot">&lt;-</span> counts <span class="sc">%&gt;%</span></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(item) <span class="sc">%&gt;%</span></span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(item, score) <span class="sc">%&gt;%</span></span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">counts_rank =</span> <span class="fu">rank</span>(<span class="sc">-</span>score))</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>mle_for_join <span class="ot">&lt;-</span> mle_results <span class="sc">%&gt;%</span></span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(item_num) <span class="sc">%&gt;%</span></span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(item_num, share) <span class="sc">%&gt;%</span></span>
+<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">mle_share =</span> share) <span class="sc">%&gt;%</span></span>
+<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">mle_rank =</span> <span class="fu">rank</span>(<span class="sc">-</span>mle_share))</span>
+<span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-13"><a href="#cb44-13" aria-hidden="true" tabindex="-1"></a>bayes_for_join <span class="ot">&lt;-</span> bayes_results <span class="sc">%&gt;%</span></span>
+<span id="cb44-14"><a href="#cb44-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(item_num) <span class="sc">%&gt;%</span></span>
+<span id="cb44-15"><a href="#cb44-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(item_num, share) <span class="sc">%&gt;%</span></span>
+<span id="cb44-16"><a href="#cb44-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">bayes_share =</span> share) <span class="sc">%&gt;%</span></span>
+<span id="cb44-17"><a href="#cb44-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">bayes_rank =</span> <span class="fu">rank</span>(<span class="sc">-</span>bayes_share))</span>
+<span id="cb44-18"><a href="#cb44-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-19"><a href="#cb44-19" aria-hidden="true" tabindex="-1"></a>comparison <span class="ot">&lt;-</span> labels <span class="sc">%&gt;%</span></span>
+<span id="cb44-20"><a href="#cb44-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(counts_for_join,  <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"item_num"</span> <span class="ot">=</span> <span class="st">"item"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb44-21"><a href="#cb44-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(mle_for_join,     <span class="at">by =</span> <span class="st">"item_num"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb44-22"><a href="#cb44-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(bayes_for_join,   <span class="at">by =</span> <span class="st">"item_num"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb44-23"><a href="#cb44-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(mle_rank) <span class="sc">%&gt;%</span></span>
+<span id="cb44-24"><a href="#cb44-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">c</span>(score, mle_share, bayes_share), <span class="sc">~</span><span class="fu">round</span>(.x, <span class="dv">3</span>)))</span>
+<span id="cb44-25"><a href="#cb44-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-26"><a href="#cb44-26" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(</span>
+<span id="cb44-27"><a href="#cb44-27" aria-hidden="true" tabindex="-1"></a>  comparison <span class="sc">%&gt;%</span> <span class="fu">select</span>(item_num, short_label, score, counts_rank, mle_share, mle_rank, bayes_share, bayes_rank),</span>
+<span id="cb44-28"><a href="#cb44-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Item #"</span>, <span class="st">"Class"</span>, <span class="st">"Counts Score"</span>, <span class="st">"Counts Rank"</span>, <span class="st">"MLE Share"</span>, <span class="st">"MLE Rank"</span>, <span class="st">"Bayes Share"</span>, <span class="st">"Bayes Rank"</span>),</span>
+<span id="cb44-29"><a href="#cb44-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"Side-by-side comparison of all three methods (sorted by MLE rank)"</span></span>
+<span id="cb44-30"><a href="#cb44-30" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -1267,7 +1297,7 @@ dplyr 1.1.0.
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">0.284</td>
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">0.284</td>
+<td style="text-align: right;">0.288</td>
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="even">
@@ -1277,8 +1307,8 @@ dplyr 1.1.0.
 <td style="text-align: right;">2</td>
 <td style="text-align: right;">0.117</td>
 <td style="text-align: right;">2</td>
-<td style="text-align: right;">0.117</td>
-<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.114</td>
+<td style="text-align: right;">3</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">7</td>
@@ -1287,77 +1317,77 @@ dplyr 1.1.0.
 <td style="text-align: right;">3</td>
 <td style="text-align: right;">0.107</td>
 <td style="text-align: right;">3</td>
-<td style="text-align: right;">0.108</td>
-<td style="text-align: right;">3</td>
+<td style="text-align: right;">0.116</td>
+<td style="text-align: right;">2</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">4</td>
 <td style="text-align: left;">Large Data</td>
 <td style="text-align: right;">0.183</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">0.097</td>
 <td style="text-align: right;">4</td>
 <td style="text-align: right;">0.097</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0.096</td>
 <td style="text-align: right;">4</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">8</td>
 <td style="text-align: left;">Capstone</td>
 <td style="text-align: right;">0.167</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0.087</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0.084</td>
 <td style="text-align: right;">6</td>
-<td style="text-align: right;">0.087</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">0.087</td>
-<td style="text-align: right;">5</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">2</td>
 <td style="text-align: left;">SQL</td>
 <td style="text-align: right;">0.162</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">0.086</td>
 <td style="text-align: right;">6</td>
 <td style="text-align: right;">0.086</td>
 <td style="text-align: right;">6</td>
+<td style="text-align: right;">0.085</td>
+<td style="text-align: right;">5</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">10</td>
 <td style="text-align: left;">Biz Intelligence</td>
 <td style="text-align: right;">0.057</td>
-<td style="text-align: right;">8</td>
+<td style="text-align: right;">7</td>
 <td style="text-align: right;">0.070</td>
 <td style="text-align: right;">7</td>
-<td style="text-align: right;">0.071</td>
+<td style="text-align: right;">0.067</td>
 <td style="text-align: right;">7</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">1</td>
 <td style="text-align: left;">AI Math &amp; Prog</td>
 <td style="text-align: right;">-0.042</td>
-<td style="text-align: right;">9</td>
+<td style="text-align: right;">8</td>
 <td style="text-align: right;">0.056</td>
 <td style="text-align: right;">8</td>
-<td style="text-align: right;">0.055</td>
+<td style="text-align: right;">0.058</td>
 <td style="text-align: right;">8</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">3</td>
 <td style="text-align: left;">Mktg/Fin/Ops</td>
 <td style="text-align: right;">-0.080</td>
-<td style="text-align: right;">10</td>
-<td style="text-align: right;">0.052</td>
 <td style="text-align: right;">9</td>
 <td style="text-align: right;">0.052</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">0.050</td>
 <td style="text-align: right;">9</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">6</td>
 <td style="text-align: left;">Analytics Consulting</td>
 <td style="text-align: right;">-0.155</td>
-<td style="text-align: right;">11</td>
-<td style="text-align: right;">0.044</td>
 <td style="text-align: right;">10</td>
 <td style="text-align: right;">0.044</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">0.042</td>
 <td style="text-align: right;">10</td>
 </tr>
 </tbody>
@@ -1367,47 +1397,47 @@ dplyr 1.1.0.
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Color palette by item (consistent across panels)</span></span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>item_colors <span class="ot">&lt;-</span> <span class="fu">setNames</span>(</span>
-<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>  scales<span class="sc">::</span><span class="fu">hue_pal</span>()(<span class="dv">10</span>),</span>
-<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>  labels<span class="sc">$</span>short_label</span>
-<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Panel 1: Counts</span></span>
-<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(counts, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(short_label, score), <span class="at">y =</span> score, <span class="at">fill =</span> short_label)) <span class="sc">+</span></span>
-<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">alpha =</span> <span class="fl">0.9</span>, <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> item_colors) <span class="sc">+</span></span>
-<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Counts"</span>, <span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Score"</span>) <span class="sc">+</span></span>
-<span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">9</span>)</span>
-<span id="cb42-14"><a href="#cb42-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb42-15"><a href="#cb42-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Panel 2: MLE</span></span>
-<span id="cb42-16"><a href="#cb42-16" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(mle_results, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(short_label, share), <span class="at">y =</span> share, <span class="at">fill =</span> short_label)) <span class="sc">+</span></span>
-<span id="cb42-17"><a href="#cb42-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">alpha =</span> <span class="fl">0.9</span>, <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb42-18"><a href="#cb42-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb42-19"><a href="#cb42-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> item_colors) <span class="sc">+</span></span>
-<span id="cb42-20"><a href="#cb42-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"MLE"</span>, <span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Share"</span>) <span class="sc">+</span></span>
-<span id="cb42-21"><a href="#cb42-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">9</span>)</span>
-<span id="cb42-22"><a href="#cb42-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb42-23"><a href="#cb42-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Panel 3: Bayes</span></span>
-<span id="cb42-24"><a href="#cb42-24" aria-hidden="true" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(bayes_results, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(short_label, share), <span class="at">y =</span> share, <span class="at">fill =</span> short_label)) <span class="sc">+</span></span>
-<span id="cb42-25"><a href="#cb42-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">alpha =</span> <span class="fl">0.9</span>, <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb42-26"><a href="#cb42-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb42-27"><a href="#cb42-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> item_colors) <span class="sc">+</span></span>
-<span id="cb42-28"><a href="#cb42-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Bayes"</span>, <span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Post. Mean Share"</span>) <span class="sc">+</span></span>
-<span id="cb42-29"><a href="#cb42-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">9</span>)</span>
-<span id="cb42-30"><a href="#cb42-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb42-31"><a href="#cb42-31" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
-<span id="cb42-32"><a href="#cb42-32" aria-hidden="true" tabindex="-1"></a>p1 <span class="sc">+</span> p2 <span class="sc">+</span> p3 <span class="sc">+</span></span>
-<span id="cb42-33"><a href="#cb42-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_annotation</span>(</span>
-<span id="cb42-34"><a href="#cb42-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Three-Method Comparison"</span>,</span>
-<span id="cb42-35"><a href="#cb42-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Each panel uses the same color per class — trace any class across all three"</span></span>
-<span id="cb42-36"><a href="#cb42-36" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Color palette by item (consistent across panels)</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>item_colors <span class="ot">&lt;-</span> <span class="fu">setNames</span>(</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>  scales<span class="sc">::</span><span class="fu">hue_pal</span>()(<span class="dv">10</span>),</span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>  labels<span class="sc">$</span>short_label</span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Panel 1: Counts</span></span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(counts, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(short_label, score), <span class="at">y =</span> score, <span class="at">fill =</span> short_label)) <span class="sc">+</span></span>
+<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">alpha =</span> <span class="fl">0.9</span>, <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> item_colors) <span class="sc">+</span></span>
+<span id="cb45-12"><a href="#cb45-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Counts"</span>, <span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Score"</span>) <span class="sc">+</span></span>
+<span id="cb45-13"><a href="#cb45-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">9</span>)</span>
+<span id="cb45-14"><a href="#cb45-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-15"><a href="#cb45-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Panel 2: MLE</span></span>
+<span id="cb45-16"><a href="#cb45-16" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(mle_results, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(short_label, share), <span class="at">y =</span> share, <span class="at">fill =</span> short_label)) <span class="sc">+</span></span>
+<span id="cb45-17"><a href="#cb45-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">alpha =</span> <span class="fl">0.9</span>, <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb45-18"><a href="#cb45-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb45-19"><a href="#cb45-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> item_colors) <span class="sc">+</span></span>
+<span id="cb45-20"><a href="#cb45-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"MLE"</span>, <span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Share"</span>) <span class="sc">+</span></span>
+<span id="cb45-21"><a href="#cb45-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">9</span>)</span>
+<span id="cb45-22"><a href="#cb45-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-23"><a href="#cb45-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Panel 3: Bayes</span></span>
+<span id="cb45-24"><a href="#cb45-24" aria-hidden="true" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(bayes_results, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(short_label, share), <span class="at">y =</span> share, <span class="at">fill =</span> short_label)) <span class="sc">+</span></span>
+<span id="cb45-25"><a href="#cb45-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">alpha =</span> <span class="fl">0.9</span>, <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb45-26"><a href="#cb45-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb45-27"><a href="#cb45-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> item_colors) <span class="sc">+</span></span>
+<span id="cb45-28"><a href="#cb45-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Bayes"</span>, <span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Post. Mean Share"</span>) <span class="sc">+</span></span>
+<span id="cb45-29"><a href="#cb45-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">9</span>)</span>
+<span id="cb45-30"><a href="#cb45-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-31"><a href="#cb45-31" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb45-32"><a href="#cb45-32" aria-hidden="true" tabindex="-1"></a>p1 <span class="sc">+</span> p2 <span class="sc">+</span> p3 <span class="sc">+</span></span>
+<span id="cb45-33"><a href="#cb45-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_annotation</span>(</span>
+<span id="cb45-34"><a href="#cb45-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Three-Method Comparison"</span>,</span>
+<span id="cb45-35"><a href="#cb45-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Each panel uses the same color per class — trace any class across all three"</span></span>
+<span id="cb45-36"><a href="#cb45-36" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="1152"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="1152"></p>
 </figure>
 </div>
 </div>
