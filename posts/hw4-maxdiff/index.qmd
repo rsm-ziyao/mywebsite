@@ -396,7 +396,7 @@ mh <- function(beta0, n_iter, step, tasks) {
 # Run sampler: tune step size for ~25-40% acceptance
 set.seed(42)
 n_iter  <- 20000
-step    <- 0.4   # tuned value
+step    <- 0.12   # tuned value
 
 result  <- mh(beta0 = rep(0, 9), n_iter = n_iter, step = step, tasks = tasks_df)
 

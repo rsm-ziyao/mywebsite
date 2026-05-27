@@ -979,14 +979,14 @@ dplyr 1.1.0.
 <span id="cb36-29"><a href="#cb36-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Run sampler: tune step size for ~25-40% acceptance</span></span>
 <span id="cb36-30"><a href="#cb36-30" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
 <span id="cb36-31"><a href="#cb36-31" aria-hidden="true" tabindex="-1"></a>n_iter  <span class="ot">&lt;-</span> <span class="dv">20000</span></span>
-<span id="cb36-32"><a href="#cb36-32" aria-hidden="true" tabindex="-1"></a>step    <span class="ot">&lt;-</span> <span class="fl">0.4</span>   <span class="co"># tuned value</span></span>
+<span id="cb36-32"><a href="#cb36-32" aria-hidden="true" tabindex="-1"></a>step    <span class="ot">&lt;-</span> <span class="fl">0.12</span>   <span class="co"># tuned value</span></span>
 <span id="cb36-33"><a href="#cb36-33" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb36-34"><a href="#cb36-34" aria-hidden="true" tabindex="-1"></a>result  <span class="ot">&lt;-</span> <span class="fu">mh</span>(<span class="at">beta0 =</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">9</span>), <span class="at">n_iter =</span> n_iter, <span class="at">step =</span> step, <span class="at">tasks =</span> tasks_df)</span>
 <span id="cb36-35"><a href="#cb36-35" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb36-36"><a href="#cb36-36" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Acceptance rate:"</span>, <span class="fu">round</span>(result<span class="sc">$</span>accept_rate, <span class="dv">3</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>Acceptance rate: 0.002 </code></pre>
+<pre><code>Acceptance rate: 0.125 </code></pre>
 </div>
 <details class="code-fold">
 <summary>Code</summary>
@@ -1100,72 +1100,72 @@ dplyr 1.1.0.
 <tr class="odd">
 <td style="text-align: right;">9</td>
 <td style="text-align: left;">Marketing Analytics</td>
-<td style="text-align: right;">1.6003</td>
-<td style="text-align: left;">[1.289, 1.883]</td>
-<td style="text-align: right;">0.2876</td>
+<td style="text-align: right;">1.6307</td>
+<td style="text-align: left;">[1.338, 1.937]</td>
+<td style="text-align: right;">0.2841</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">7</td>
-<td style="text-align: left;">Customer Analytics</td>
-<td style="text-align: right;">0.6817</td>
-<td style="text-align: left;">[0.31, 0.944]</td>
-<td style="text-align: right;">0.1156</td>
-</tr>
-<tr class="odd">
 <td style="text-align: right;">5</td>
 <td style="text-align: left;">Business Analytics</td>
-<td style="text-align: right;">0.6812</td>
-<td style="text-align: left;">[0.47, 0.992]</td>
-<td style="text-align: right;">0.1144</td>
+<td style="text-align: right;">0.7447</td>
+<td style="text-align: left;">[0.445, 1.022]</td>
+<td style="text-align: right;">0.1173</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">7</td>
+<td style="text-align: left;">Customer Analytics</td>
+<td style="text-align: right;">0.6577</td>
+<td style="text-align: left;">[0.366, 0.927]</td>
+<td style="text-align: right;">0.1076</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">4</td>
 <td style="text-align: left;">Large Data</td>
-<td style="text-align: right;">0.5055</td>
-<td style="text-align: left;">[0.26, 0.833]</td>
-<td style="text-align: right;">0.0965</td>
+<td style="text-align: right;">0.5532</td>
+<td style="text-align: left;">[0.246, 0.822]</td>
+<td style="text-align: right;">0.0969</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">2</td>
-<td style="text-align: left;">SQL</td>
-<td style="text-align: right;">0.3776</td>
-<td style="text-align: left;">[0.204, 0.688]</td>
-<td style="text-align: right;">0.0845</td>
-</tr>
-<tr class="even">
 <td style="text-align: right;">8</td>
 <td style="text-align: left;">Capstone</td>
-<td style="text-align: right;">0.3701</td>
-<td style="text-align: left;">[0.213, 0.718]</td>
-<td style="text-align: right;">0.0838</td>
+<td style="text-align: right;">0.4428</td>
+<td style="text-align: left;">[0.174, 0.694]</td>
+<td style="text-align: right;">0.0868</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">SQL</td>
+<td style="text-align: right;">0.4332</td>
+<td style="text-align: left;">[0.153, 0.717]</td>
+<td style="text-align: right;">0.0860</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">10</td>
 <td style="text-align: left;">Biz Intelligence</td>
-<td style="text-align: right;">0.1552</td>
-<td style="text-align: left;">[-0.109, 0.359]</td>
-<td style="text-align: right;">0.0674</td>
+<td style="text-align: right;">0.2321</td>
+<td style="text-align: left;">[-0.049, 0.498]</td>
+<td style="text-align: right;">0.0703</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">1</td>
 <td style="text-align: left;">AI Math &amp; Prog</td>
 <td style="text-align: right;">0.0000</td>
 <td style="text-align: left;">[0, 0]</td>
-<td style="text-align: right;">0.0577</td>
+<td style="text-align: right;">0.0558</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">3</td>
 <td style="text-align: left;">Mktg/Fin/Ops</td>
-<td style="text-align: right;">-0.1353</td>
-<td style="text-align: left;">[-0.326, 0.03]</td>
-<td style="text-align: right;">0.0504</td>
+<td style="text-align: right;">-0.0760</td>
+<td style="text-align: left;">[-0.348, 0.184]</td>
+<td style="text-align: right;">0.0517</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">6</td>
 <td style="text-align: left;">Analytics Consulting</td>
-<td style="text-align: right;">-0.3184</td>
-<td style="text-align: left;">[-0.534, -0.124]</td>
-<td style="text-align: right;">0.0421</td>
+<td style="text-align: right;">-0.2445</td>
+<td style="text-align: left;">[-0.554, 0.02]</td>
+<td style="text-align: right;">0.0437</td>
 </tr>
 </tbody>
 </table>
@@ -1297,7 +1297,7 @@ dplyr 1.1.0.
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">0.284</td>
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">0.288</td>
+<td style="text-align: right;">0.284</td>
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="even">
@@ -1307,8 +1307,8 @@ dplyr 1.1.0.
 <td style="text-align: right;">2</td>
 <td style="text-align: right;">0.117</td>
 <td style="text-align: right;">2</td>
-<td style="text-align: right;">0.114</td>
-<td style="text-align: right;">3</td>
+<td style="text-align: right;">0.117</td>
+<td style="text-align: right;">2</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">7</td>
@@ -1317,8 +1317,8 @@ dplyr 1.1.0.
 <td style="text-align: right;">3</td>
 <td style="text-align: right;">0.107</td>
 <td style="text-align: right;">3</td>
-<td style="text-align: right;">0.116</td>
-<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.108</td>
+<td style="text-align: right;">3</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">4</td>
@@ -1327,7 +1327,7 @@ dplyr 1.1.0.
 <td style="text-align: right;">4</td>
 <td style="text-align: right;">0.097</td>
 <td style="text-align: right;">4</td>
-<td style="text-align: right;">0.096</td>
+<td style="text-align: right;">0.097</td>
 <td style="text-align: right;">4</td>
 </tr>
 <tr class="odd">
@@ -1337,8 +1337,8 @@ dplyr 1.1.0.
 <td style="text-align: right;">5</td>
 <td style="text-align: right;">0.087</td>
 <td style="text-align: right;">5</td>
-<td style="text-align: right;">0.084</td>
-<td style="text-align: right;">6</td>
+<td style="text-align: right;">0.087</td>
+<td style="text-align: right;">5</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">2</td>
@@ -1347,8 +1347,8 @@ dplyr 1.1.0.
 <td style="text-align: right;">6</td>
 <td style="text-align: right;">0.086</td>
 <td style="text-align: right;">6</td>
-<td style="text-align: right;">0.085</td>
-<td style="text-align: right;">5</td>
+<td style="text-align: right;">0.086</td>
+<td style="text-align: right;">6</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">10</td>
@@ -1357,7 +1357,7 @@ dplyr 1.1.0.
 <td style="text-align: right;">7</td>
 <td style="text-align: right;">0.070</td>
 <td style="text-align: right;">7</td>
-<td style="text-align: right;">0.067</td>
+<td style="text-align: right;">0.070</td>
 <td style="text-align: right;">7</td>
 </tr>
 <tr class="even">
@@ -1367,7 +1367,7 @@ dplyr 1.1.0.
 <td style="text-align: right;">8</td>
 <td style="text-align: right;">0.056</td>
 <td style="text-align: right;">8</td>
-<td style="text-align: right;">0.058</td>
+<td style="text-align: right;">0.056</td>
 <td style="text-align: right;">8</td>
 </tr>
 <tr class="odd">
@@ -1377,7 +1377,7 @@ dplyr 1.1.0.
 <td style="text-align: right;">9</td>
 <td style="text-align: right;">0.052</td>
 <td style="text-align: right;">9</td>
-<td style="text-align: right;">0.050</td>
+<td style="text-align: right;">0.052</td>
 <td style="text-align: right;">9</td>
 </tr>
 <tr class="even">
@@ -1387,7 +1387,7 @@ dplyr 1.1.0.
 <td style="text-align: right;">10</td>
 <td style="text-align: right;">0.044</td>
 <td style="text-align: right;">10</td>
-<td style="text-align: right;">0.042</td>
+<td style="text-align: right;">0.044</td>
 <td style="text-align: right;">10</td>
 </tr>
 </tbody>
