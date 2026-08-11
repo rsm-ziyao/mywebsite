@@ -1,5 +1,5 @@
 ---
-title: "Replication of Angrist and Lavy (1999)"
+title: "RDD Replication: Class Size and Scholastic Achievement"
 subtitle: "Using Maimonides' Rule to Estimate the Effect of Class Size on Scholastic Achievement"
 author: "Zihui Yao"
 date: today

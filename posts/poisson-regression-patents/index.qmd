@@ -1,5 +1,5 @@
 ---
-title: "Does Blueprinty's Software Actually Help Win Patents?"
+title: "Poisson Regression: Blueprinty Patent Analysis"
 subtitle: "A Maximum Likelihood Deep-Dive into Poisson Regression"
 author: "Ziyao"
 date: today
@@ -257,7 +257,9 @@ poisson_regression_loglikelihood <- function(beta, Y, X) {
 ### Finding the MLE with optim()
 
 ```{r optim-regr}
-beta_init <- rep(0, ncol(X))
+glm_init <- glm(patents ~ age + I(age^2) + r_mw + r_nw + r_s + r_sw + iscust,
+                data = df2, family = poisson(link = "log"))
+beta_init <- coef(glm_init)
 
 result_reg <- optim(
   par     = beta_init,
