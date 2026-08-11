@@ -1,6 +1,27 @@
 ---
 title: "Projects"
+page-layout: full
 listing:
   contents: posts
   type: grid
+  sort: "date desc"
+  fields: [title, description, date]
+  page-size: 12
 ---
+
+<div class="page-heading project-heading">
+<p class="eyebrow">Selected work & analysis notes</p>
+<h1>Work that connects evidence to action.</h1>
+<p class="page-lede">A focused portfolio of applied AI, predictive modeling, financial analysis, and experiments.</p>
+</div>
+
+<div id="realtor-capstone" class="project-feature-banner project-feature-client">
+<div><span class="tag tag-accent">Featured case study</span><h2>Realtor.com · Apple Search Ads Optimization</h2><p>A backtest-validated keyword bid optimization framework, dashboard, and weekly operating workflow.</p></div>
+<a class="button button-primary" href="posts/realtor-capstone/index.html">Open project <span>↗</span></a>
+</div>
+
+<div class="project-secondary-grid">
+<a class="mini-project" href="posts/hw3/hw3.html"><span class="eyebrow">Statistical modeling</span><h3>Poisson regression & causal reasoning</h3><p>Maximum likelihood estimation, model interpretation, and the limits of observational comparisons.</p><span class="text-link">Read analysis ↗</span></a>
+<a class="mini-project" href="posts/hw4-maxdiff/index.html"><span class="eyebrow">Preference modeling</span><h3>MaxDiff, MNL, and Bayesian estimation</h3><p>Comparing counts, maximum likelihood, and MCMC to understand preference strength and uncertainty.</p><span class="text-link">Read analysis ↗</span></a>
+<a class="mini-project" href="posts/realtor-capstone/index.html"><span class="eyebrow">Client case study</span><h3>Realtor.com Apple Search Ads</h3><p>A detailed capstone case study on keyword bid optimization and decision support.</p><span class="text-link">Read case study ↗</span></a>
+</div>

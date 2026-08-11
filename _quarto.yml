@@ -3,13 +3,27 @@ project:
   output-dir: docs
 
 website:
-  title: "My Website"
+  title: "Zihui Yao"
   navbar:
     left:
       - href: index.qmd
-        text: Home
+        text: Zihui Yao
       - href: projects.qmd
-        text: Projects
+        text: Work
+      - href: about.qmd
+        text: About
+    right:
+      - text: Resume
+        href: assets/Zihui_Yao_Resume.pdf
+      - icon: github
+        href: https://github.com/rsm-ziyao
+        aria-label: GitHub
+      - icon: linkedin
+        href: https://www.linkedin.com/in/zihui-yao-2223853ab/
+        aria-label: LinkedIn
+      - icon: envelope
+        href: mailto:ziyao@ucsd.edu
+        aria-label: Email
 
 format:
   html:

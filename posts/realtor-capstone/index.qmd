@@ -1,0 +1,79 @@
+---
+title: "Realtor.com · Apple Search Ads Optimization"
+subtitle: "A backtest-validated keyword bid optimization framework"
+author: "Zihui Yao · Aanya Sikka · Fanny Luan · Shengzi Guo"
+date: 2026-05-01
+page-layout: full
+format:
+  html:
+    toc: false
+---
+
+<div class="capstone-hero">
+<span class="tag tag-accent">Featured case study · Realtor.com × UC San Diego</span>
+<h1>From manual bid management to a repeatable decision system.</h1>
+<p class="subtitle">We built a data-driven Apple Search Ads workflow that turns keyword-level signals into explainable bid recommendations, a strategist dashboard, and a backtest against real company decisions.</p>
+<div class="case-meta"><span><strong>Role</strong> Business Analytics Lead</span><span><strong>Stack</strong> Python · SQL · Tableau · Streamlit · Plotly · Snowflake</span><span><strong>Scope</strong> Growth analytics · paid search · decision support</span></div>
+</div>
+
+<section class="case-section">
+<p class="eyebrow">Executive summary</p>
+<h2>The project changed the unit of work from “adjust a bid” to “run a validated decision process.”</h2>
+<p>Realtor.com’s Apple Search Ads team was managing bids manually. Decisions happened relatively infrequently, the logic was difficult to reproduce, and much of the operational knowledge sat with one specialist. Our team designed a framework that could be reviewed weekly, explained keyword by keyword, exported for execution, and improved using evidence from historical outcomes.</p>
+<div class="case-grid"><div class="case-card"><strong>3,053</strong><span>keywords analyzed in the final framework</span></div><div class="case-card"><strong>88</strong><span>keywords with execution-ready recommendations</span></div><div class="case-card"><strong>$85.7K</strong><span>monthly spend represented by the final recommendation pool</span></div></div>
+</section>
+
+<section class="case-section">
+<p class="eyebrow">01 · Business problem</p>
+<h2>Manual bid management limited speed, consistency, and trust.</h2>
+<div class="insight-grid"><div class="insight"><h3>Slow reaction</h3><p>Bid changes happened only around 58 times per year, making it difficult to respond quickly to performance and competitive shifts.</p></div><div class="insight"><h3>Key-person dependency</h3><p>Decision logic was concentrated in individual expertise, which made handoff and scale difficult.</p></div><div class="insight"><h3>Low transparency</h3><p>Spreadsheet-based work made it hard to see why a keyword received a recommendation or whether a prior decision worked.</p></div><div class="insight"><h3>No formal validation loop</h3><p>The team lacked a consistent process for comparing the framework’s recommended action with the outcome of real bid changes.</p></div></div>
+<div class="callout"><strong>Design objective:</strong> build a weekly bid decision support system that is faster to review, easier to audit, and grounded in business evidence.</div>
+</section>
+
+<section class="case-section">
+<p class="eyebrow">02 · Data foundation</p>
+<h2>Start with a reliable keyword pool before making recommendations.</h2>
+<p>The framework combined Apple Search Ads keyword performance, AppsFlyer revenue and lead attribution, Apple impression share data, keyword/campaign/ad-group lookups, and historical bid change records. The key design choice was to separate keywords by evidence sufficiency rather than forcing every keyword into an action.</p>
+<div class="case-grid"><div class="case-card"><strong>Actionable</strong><span>enough performance data to enter the bid decision pipeline</span></div><div class="case-card"><strong>Monitoring</strong><span>some activity, but not enough revenue or volume for a confident action</span></div><div class="case-card"><strong>Dormant</strong><span>insufficient activity or zero taps; no bid action recommended</span></div></div>
+</section>
+
+<section class="case-section">
+<p class="eyebrow">03 · Framework architecture</p>
+<h2>Two lenses, category-specific rules, one final action.</h2>
+<p>Each keyword was classified across two dimensions. Brand Segment captured the role of the keyword in the competitive landscape; Funnel Stage captured the user’s intent. Different combinations were evaluated with different metrics, so the framework did not treat every keyword as if it had the same business job.</p>
+<div class="flow"><div class="flow-step"><strong>01 · Ingest</strong>Apple Search Ads, AppsFlyer, impression share, and bid history</div><div class="flow-step"><strong>02 · Classify</strong>Brand / competitor / non-brand × awareness / consideration / conversion</div><div class="flow-step"><strong>03 · Evaluate</strong>ROAS, CPI, CTR, CVR, lead rate, or share of voice</div><div class="flow-step"><strong>04 · Vote</strong>Combine brand and funnel signals into one direction</div><div class="flow-step"><strong>05 · Size</strong>Use signal strength to assign ±10% or ±20%</div><div class="flow-step"><strong>06 · Export</strong>Review in the dashboard and prepare the action file</div></div>
+<p class="case-section-note">Examples of category logic: Brand keywords were evaluated primarily through Share of Voice; Competitor keywords balanced ROAS and CPI; Awareness keywords emphasized CTR and CPI; Consideration keywords emphasized ROAS and CVR; Conversion keywords emphasized ROAS and lead rate.</p>
+</section>
+
+<section class="case-section">
+<p class="eyebrow">04 · Recommendation output</p>
+<h2>The framework converted signals into a decision with direction, magnitude, and confidence.</h2>
+<p>The final output did not stop at “increase” or “decrease.” It assigned a recommendation magnitude and confidence level, giving the strategist a way to prioritize high-conviction actions and inspect conflicts before execution.</p>
+<div class="case-grid"><div class="case-card"><strong>+20%</strong><span>strong increase signal · 13 keywords · $669 monthly spend</span></div><div class="case-card"><strong>+10%</strong><span>moderate increase signal · 19 keywords · $38,768 monthly spend</span></div><div class="case-card"><strong>-10% / -20%</strong><span>decrease signals · 56 keywords · approximately $46K monthly spend</span></div></div>
+<div class="metric-strip"><div><strong>42</strong><span>high-confidence actions where both lenses agreed</span></div><div><strong>46</strong><span>medium-confidence actions with a one-sided signal</span></div><div><strong>16×</strong><span>ROAS difference between decrease and increase pools</span></div></div>
+</section>
+
+<section class="case-section">
+<p class="eyebrow">05 · Dashboard product</p>
+<h2>Designed around the weekly strategist workflow.</h2>
+<p>The dashboard connected account-level context to keyword-level execution. A strategist could first understand the portfolio, then identify where money was concentrated, then inspect the recommendation and its supporting signals.</p>
+<div class="case-grid"><div class="case-card"><strong>Overview</strong><span>KPI cards, spend distribution, Pareto concentration, ROAS distribution, and keyword detail</span></div><div class="case-card"><strong>Insights</strong><span>Top increase/decrease candidates ranked by confidence and signal magnitude</span></div><div class="case-card"><strong>Diagnostic</strong><span>Spend vs. ROAS, segment × stage breakdown, filters, and keyword drill-down</span></div></div>
+<p class="case-links"><a class="button button-primary" href="https://replit.com/t/realtorcom-capstone/repls/Realtor-Ads-Hub">Open ASA Hub ↗</a><a class="button button-quiet" href="https://replit.com/t/realtorcom-capstone/repls/Streamlit-Dashboard">Open Streamlit dashboard ↗</a></p>
+</section>
+
+<section class="case-section">
+<p class="eyebrow">06 · Backtest and validation</p>
+<h2>The backtest showed where the framework was strong and where it needed a guardrail.</h2>
+<p>We applied the framework to 59 real bid-change events from January to May 2026 using point-in-time metrics available at each event. We compared the framework recommendation with the actual company action and evaluated 14-day before/after changes in profit and ROAS.</p>
+<div class="insight-grid"><div class="insight"><h3>Decrease logic was strongly validated.</h3><p>Among the 17 events with sufficient validation data where both the company and framework recommended Decrease, profit improved 88% of the time. Median profit improvement was +$5,018 and median ROAS improvement was +0.694.</p></div><div class="insight"><h3>The framework caught risky increases.</h3><p>In all three observed cases where the company increased while the framework recommended Decrease, profit worsened. This made the decrease logic the strongest validated part of the system.</p></div></div>
+<div class="callout"><strong>Guardrail discovered:</strong> high ROAS does not automatically justify a Brand keyword increase. When Share of Voice is already high, saturation can matter more than funnel signals.</div>
+</section>
+
+<section class="case-section">
+<p class="eyebrow">07 · Business impact and handoff</p>
+<h2>A portfolio solution, not a one-time analysis.</h2>
+<div class="insight-grid"><div class="insight"><h3>Operational</h3><p>Replaced manual spreadsheet review with a repeatable weekly workflow and export-ready action list.</p></div><div class="insight"><h3>Financial</h3><p>Identified approximately $46K per month in the decrease pool and a 16× ROAS difference between decrease and increase pools.</p></div><div class="insight"><h3>Governance</h3><p>Documented the rules, confidence levels, triggered logic, and backtest evidence so recommendations could be audited.</p></div><div class="insight"><h3>Next iteration</h3><p>Strengthen Brand Share of Voice logic by lowering the decrease threshold or blocking Brand increases above a saturation threshold.</p></div></div>
+<p>I contributed to the keyword segmentation and performance analysis, the recommendation framework and decision logic, dashboard storytelling, and the translation of model output into a workflow a marketing team could review and execute.</p>
+<p class="case-links"><a class="button button-primary" href="../../assets/Zihui_Yao_Resume.pdf">View resume <span>↗</span></a><a class="button button-quiet" href="https://www.linkedin.com/in/zihui-yao-2223853ab/">Connect on LinkedIn <span>↗</span></a></p>
+<p class="callout"><strong>Public portfolio note:</strong> this page uses a sanitized summary. Raw Snowflake tables, search terms, keyword-level exports, and confidential sponsor data are intentionally not published.</p>
+</section>
