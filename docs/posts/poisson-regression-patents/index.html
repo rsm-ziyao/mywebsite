@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Ziyao">
-<meta name="dcterms.date" content="2026-05-17">
+<meta name="dcterms.date" content="2026-08-11">
 
-<title>Poisson Regression: Blueprinty Patent Analysis – My Website</title>
+<title>Poisson Regression: Blueprinty Patent Analysis – Zihui Yao</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -149,7 +149,7 @@ window.Quarto = {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../../index.html">
-    <span class="navbar-title">My Website</span>
+    <span class="navbar-title">Zihui Yao</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -160,11 +160,36 @@ window.Quarto = {
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
     <a class="nav-link" href="../../index.html"> 
-<span class="menu-text">Home</span></a>
+<span class="menu-text">Zihui Yao</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="../../projects.html"> 
-<span class="menu-text">Projects</span></a>
+<span class="menu-text">Work</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">Profile</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../assets/Zihui_Yao_Resume.pdf"> 
+<span class="menu-text">Resume</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/rsm-ziyao"> <i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/zihui-yao-2223853ab/"> <i class="bi bi-linkedin" role="img" aria-label="LinkedIn">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="mailto:ziyao@ucsd.edu"> <i class="bi bi-envelope" role="img" aria-label="Email">
+</i> 
+<span class="menu-text"></span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
@@ -217,7 +242,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title">Does Blueprinty’s Software Actually Help Win Patents?</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
+<div class="quarto-title-block"><div><h1 class="title">Poisson Regression: Blueprinty Patent Analysis</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
 <p class="subtitle lead">A Maximum Likelihood Deep-Dive into Poisson Regression</p>
 </div>
 
@@ -235,7 +260,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">May 17, 2026</p>
+      <p class="date">August 11, 2026</p>
     </div>
   </div>
   
@@ -440,24 +465,26 @@ window.Quarto = {
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>beta_init <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">ncol</span>(X))</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>result_reg <span class="ot">&lt;-</span> <span class="fu">optim</span>(</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">par     =</span> beta_init,</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">fn      =</span> <span class="cf">function</span>(b) <span class="sc">-</span><span class="fu">poisson_regression_loglikelihood</span>(b, Y2, X),</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">method  =</span> <span class="st">"BFGS"</span>,</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">hessian =</span> <span class="cn">TRUE</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>beta_hat <span class="ot">&lt;-</span> result_reg<span class="sc">$</span>par</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>se_hat   <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">diag</span>(<span class="fu">solve</span>(result_reg<span class="sc">$</span>hessian)))</span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>z_vals   <span class="ot">&lt;-</span> beta_hat <span class="sc">/</span> se_hat</span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>p_vals   <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">pnorm</span>(<span class="sc">-</span><span class="fu">abs</span>(z_vals))</span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>coef_names <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Intercept"</span>, <span class="st">"Age"</span>, <span class="st">"Age²"</span>,</span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>                <span class="st">"Region: Midwest"</span>, <span class="st">"Region: Northwest"</span>,</span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>                <span class="st">"Region: South"</span>, <span class="st">"Region: Southwest"</span>,</span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>                <span class="st">"Blueprinty Customer"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>glm_init <span class="ot">&lt;-</span> <span class="fu">glm</span>(patents <span class="sc">~</span> age <span class="sc">+</span> <span class="fu">I</span>(age<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> r_mw <span class="sc">+</span> r_nw <span class="sc">+</span> r_s <span class="sc">+</span> r_sw <span class="sc">+</span> iscust,</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">data =</span> df2, <span class="at">family =</span> <span class="fu">poisson</span>(<span class="at">link =</span> <span class="st">"log"</span>))</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>beta_init <span class="ot">&lt;-</span> <span class="fu">coef</span>(glm_init)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>result_reg <span class="ot">&lt;-</span> <span class="fu">optim</span>(</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">par     =</span> beta_init,</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">fn      =</span> <span class="cf">function</span>(b) <span class="sc">-</span><span class="fu">poisson_regression_loglikelihood</span>(b, Y2, X),</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">method  =</span> <span class="st">"BFGS"</span>,</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">hessian =</span> <span class="cn">TRUE</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>beta_hat <span class="ot">&lt;-</span> result_reg<span class="sc">$</span>par</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>se_hat   <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">diag</span>(<span class="fu">solve</span>(result_reg<span class="sc">$</span>hessian)))</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>z_vals   <span class="ot">&lt;-</span> beta_hat <span class="sc">/</span> se_hat</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>p_vals   <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">pnorm</span>(<span class="sc">-</span><span class="fu">abs</span>(z_vals))</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>coef_names <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Intercept"</span>, <span class="st">"Age"</span>, <span class="st">"Age²"</span>,</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>                <span class="st">"Region: Midwest"</span>, <span class="st">"Region: Northwest"</span>,</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>                <span class="st">"Region: South"</span>, <span class="st">"Region: Southwest"</span>,</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>                <span class="st">"Blueprinty Customer"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
@@ -501,23 +528,23 @@ window.Quarto = {
 <span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_options</span>(<span class="at">table.font.size =</span> <span class="dv">13</span>, <span class="at">heading.align =</span> <span class="st">"left"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
-<div id="zlmdhkqlzq" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#zlmdhkqlzq table {
+<div id="mbffnokqsi" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#mbffnokqsi table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#zlmdhkqlzq thead, #zlmdhkqlzq tbody, #zlmdhkqlzq tfoot, #zlmdhkqlzq tr, #zlmdhkqlzq td, #zlmdhkqlzq th {
+#mbffnokqsi thead, #mbffnokqsi tbody, #mbffnokqsi tfoot, #mbffnokqsi tr, #mbffnokqsi td, #mbffnokqsi th {
   border-style: none;
 }
 
-#zlmdhkqlzq p {
+#mbffnokqsi p {
   margin: 0;
   padding: 0;
 }
 
-#zlmdhkqlzq .gt_table {
+#mbffnokqsi .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -543,12 +570,12 @@ window.Quarto = {
   border-left-color: #D3D3D3;
 }
 
-#zlmdhkqlzq .gt_caption {
+#mbffnokqsi .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#zlmdhkqlzq .gt_title {
+#mbffnokqsi .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -560,7 +587,7 @@ window.Quarto = {
   border-bottom-width: 0;
 }
 
-#zlmdhkqlzq .gt_subtitle {
+#mbffnokqsi .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -572,7 +599,7 @@ window.Quarto = {
   border-top-width: 0;
 }
 
-#zlmdhkqlzq .gt_heading {
+#mbffnokqsi .gt_heading {
   background-color: #FFFFFF;
   text-align: left;
   border-bottom-color: #FFFFFF;
@@ -584,13 +611,13 @@ window.Quarto = {
   border-right-color: #D3D3D3;
 }
 
-#zlmdhkqlzq .gt_bottom_border {
+#mbffnokqsi .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#zlmdhkqlzq .gt_col_headings {
+#mbffnokqsi .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -605,7 +632,7 @@ window.Quarto = {
   border-right-color: #D3D3D3;
 }
 
-#zlmdhkqlzq .gt_col_heading {
+#mbffnokqsi .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -625,7 +652,7 @@ window.Quarto = {
   overflow-x: hidden;
 }
 
-#zlmdhkqlzq .gt_column_spanner_outer {
+#mbffnokqsi .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -637,15 +664,15 @@ window.Quarto = {
   padding-right: 4px;
 }
 
-#zlmdhkqlzq .gt_column_spanner_outer:first-child {
+#mbffnokqsi .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#zlmdhkqlzq .gt_column_spanner_outer:last-child {
+#mbffnokqsi .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#zlmdhkqlzq .gt_column_spanner {
+#mbffnokqsi .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -657,11 +684,11 @@ window.Quarto = {
   width: 100%;
 }
 
-#zlmdhkqlzq .gt_spanner_row {
+#mbffnokqsi .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#zlmdhkqlzq .gt_group_heading {
+#mbffnokqsi .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -687,7 +714,7 @@ window.Quarto = {
   text-align: left;
 }
 
-#zlmdhkqlzq .gt_empty_group_heading {
+#mbffnokqsi .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -702,15 +729,15 @@ window.Quarto = {
   vertical-align: middle;
 }
 
-#zlmdhkqlzq .gt_from_md > :first-child {
+#mbffnokqsi .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#zlmdhkqlzq .gt_from_md > :last-child {
+#mbffnokqsi .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#zlmdhkqlzq .gt_row {
+#mbffnokqsi .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -729,7 +756,7 @@ window.Quarto = {
   overflow-x: hidden;
 }
 
-#zlmdhkqlzq .gt_stub {
+#mbffnokqsi .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -742,7 +769,7 @@ window.Quarto = {
   padding-right: 5px;
 }
 
-#zlmdhkqlzq .gt_stub_row_group {
+#mbffnokqsi .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -756,15 +783,15 @@ window.Quarto = {
   vertical-align: top;
 }
 
-#zlmdhkqlzq .gt_row_group_first td {
+#mbffnokqsi .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#zlmdhkqlzq .gt_row_group_first th {
+#mbffnokqsi .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#zlmdhkqlzq .gt_summary_row {
+#mbffnokqsi .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -774,16 +801,16 @@ window.Quarto = {
   padding-right: 5px;
 }
 
-#zlmdhkqlzq .gt_first_summary_row {
+#mbffnokqsi .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#zlmdhkqlzq .gt_first_summary_row.thick {
+#mbffnokqsi .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#zlmdhkqlzq .gt_last_summary_row {
+#mbffnokqsi .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -793,7 +820,7 @@ window.Quarto = {
   border-bottom-color: #D3D3D3;
 }
 
-#zlmdhkqlzq .gt_grand_summary_row {
+#mbffnokqsi .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -803,7 +830,7 @@ window.Quarto = {
   padding-right: 5px;
 }
 
-#zlmdhkqlzq .gt_first_grand_summary_row {
+#mbffnokqsi .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -813,7 +840,7 @@ window.Quarto = {
   border-top-color: #D3D3D3;
 }
 
-#zlmdhkqlzq .gt_last_grand_summary_row_top {
+#mbffnokqsi .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -823,11 +850,11 @@ window.Quarto = {
   border-bottom-color: #D3D3D3;
 }
 
-#zlmdhkqlzq .gt_striped {
+#mbffnokqsi .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#zlmdhkqlzq .gt_table_body {
+#mbffnokqsi .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -836,7 +863,7 @@ window.Quarto = {
   border-bottom-color: #D3D3D3;
 }
 
-#zlmdhkqlzq .gt_footnotes {
+#mbffnokqsi .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -850,7 +877,7 @@ window.Quarto = {
   border-right-color: #D3D3D3;
 }
 
-#zlmdhkqlzq .gt_footnote {
+#mbffnokqsi .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -859,7 +886,7 @@ window.Quarto = {
   padding-right: 5px;
 }
 
-#zlmdhkqlzq .gt_sourcenotes {
+#mbffnokqsi .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -873,7 +900,7 @@ window.Quarto = {
   border-right-color: #D3D3D3;
 }
 
-#zlmdhkqlzq .gt_sourcenote {
+#mbffnokqsi .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -881,72 +908,72 @@ window.Quarto = {
   padding-right: 5px;
 }
 
-#zlmdhkqlzq .gt_left {
+#mbffnokqsi .gt_left {
   text-align: left;
 }
 
-#zlmdhkqlzq .gt_center {
+#mbffnokqsi .gt_center {
   text-align: center;
 }
 
-#zlmdhkqlzq .gt_right {
+#mbffnokqsi .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#zlmdhkqlzq .gt_font_normal {
+#mbffnokqsi .gt_font_normal {
   font-weight: normal;
 }
 
-#zlmdhkqlzq .gt_font_bold {
+#mbffnokqsi .gt_font_bold {
   font-weight: bold;
 }
 
-#zlmdhkqlzq .gt_font_italic {
+#mbffnokqsi .gt_font_italic {
   font-style: italic;
 }
 
-#zlmdhkqlzq .gt_super {
+#mbffnokqsi .gt_super {
   font-size: 65%;
 }
 
-#zlmdhkqlzq .gt_footnote_marks {
+#mbffnokqsi .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#zlmdhkqlzq .gt_asterisk {
+#mbffnokqsi .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#zlmdhkqlzq .gt_indent_1 {
+#mbffnokqsi .gt_indent_1 {
   text-indent: 5px;
 }
 
-#zlmdhkqlzq .gt_indent_2 {
+#mbffnokqsi .gt_indent_2 {
   text-indent: 10px;
 }
 
-#zlmdhkqlzq .gt_indent_3 {
+#mbffnokqsi .gt_indent_3 {
   text-indent: 15px;
 }
 
-#zlmdhkqlzq .gt_indent_4 {
+#mbffnokqsi .gt_indent_4 {
   text-indent: 20px;
 }
 
-#zlmdhkqlzq .gt_indent_5 {
+#mbffnokqsi .gt_indent_5 {
   text-indent: 25px;
 }
 
-#zlmdhkqlzq .katex-display {
+#mbffnokqsi .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#zlmdhkqlzq div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#mbffnokqsi div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -985,57 +1012,57 @@ glm() benchmark
 <tbody class="gt_table_body">
 <tr class="odd">
 <td class="gt_row gt_left" headers="Term">Intercept</td>
-<td class="gt_row gt_right" headers="MLE_Est">−0.1257</td>
-<td class="gt_row gt_right" headers="MLE_SE">0.1108</td>
+<td class="gt_row gt_right" headers="MLE_Est">−0.4797</td>
+<td class="gt_row gt_right" headers="MLE_SE">0.1123</td>
 <td class="gt_row gt_right" headers="GLM_Est">−0.4797</td>
 <td class="gt_row gt_right" headers="GLM_SE">0.1832</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_left" headers="Term">Age</td>
-<td class="gt_row gt_right" headers="MLE_Est">0.1153</td>
-<td class="gt_row gt_right" headers="MLE_SE">0.0064</td>
+<td class="gt_row gt_right" headers="MLE_Est">0.1486</td>
+<td class="gt_row gt_right" headers="MLE_SE">0.0066</td>
 <td class="gt_row gt_right" headers="GLM_Est">0.1486</td>
 <td class="gt_row gt_right" headers="GLM_SE">0.0139</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_left" headers="Term">Age²</td>
-<td class="gt_row gt_right" headers="MLE_Est">−0.0022</td>
+<td class="gt_row gt_right" headers="MLE_Est">−0.0030</td>
 <td class="gt_row gt_right" headers="MLE_SE">0.0001</td>
 <td class="gt_row gt_right" headers="GLM_Est">−0.0030</td>
 <td class="gt_row gt_right" headers="GLM_SE">0.0003</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_left" headers="Term">Region: Midwest</td>
-<td class="gt_row gt_right" headers="MLE_Est">−0.0238</td>
-<td class="gt_row gt_right" headers="MLE_SE">0.0437</td>
+<td class="gt_row gt_right" headers="MLE_Est">−0.0292</td>
+<td class="gt_row gt_right" headers="MLE_SE">0.0436</td>
 <td class="gt_row gt_right" headers="GLM_Est">−0.0292</td>
 <td class="gt_row gt_right" headers="GLM_SE">0.0436</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_left" headers="Term">Region: Northwest</td>
-<td class="gt_row gt_right" headers="MLE_Est">−0.0352</td>
+<td class="gt_row gt_right" headers="MLE_Est">−0.0467</td>
 <td class="gt_row gt_right" headers="MLE_SE">0.0466</td>
 <td class="gt_row gt_right" headers="GLM_Est">−0.0467</td>
 <td class="gt_row gt_right" headers="GLM_SE">0.0466</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_left" headers="Term">Region: South</td>
-<td class="gt_row gt_right" headers="MLE_Est">−0.0058</td>
-<td class="gt_row gt_right" headers="MLE_SE">0.0459</td>
+<td class="gt_row gt_right" headers="MLE_Est">0.0274</td>
+<td class="gt_row gt_right" headers="MLE_SE">0.0451</td>
 <td class="gt_row gt_right" headers="GLM_Est">0.0274</td>
 <td class="gt_row gt_right" headers="GLM_SE">0.0451</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_left" headers="Term">Region: Southwest</td>
-<td class="gt_row gt_right" headers="MLE_Est">−0.0383</td>
-<td class="gt_row gt_right" headers="MLE_SE">0.0396</td>
+<td class="gt_row gt_right" headers="MLE_Est">0.0214</td>
+<td class="gt_row gt_right" headers="MLE_SE">0.0385</td>
 <td class="gt_row gt_right" headers="GLM_Est">0.0214</td>
 <td class="gt_row gt_right" headers="GLM_SE">0.0385</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_left" headers="Term" style="background-color: #FFF3E0; font-weight: bold">Blueprinty Customer</td>
-<td class="gt_row gt_right" headers="MLE_Est" style="background-color: #FFF3E0; font-weight: bold">0.0614</td>
-<td class="gt_row gt_right" headers="MLE_SE" style="background-color: #FFF3E0; font-weight: bold">0.0320</td>
+<td class="gt_row gt_right" headers="MLE_Est" style="background-color: #FFF3E0; font-weight: bold">0.2076</td>
+<td class="gt_row gt_right" headers="MLE_SE" style="background-color: #FFF3E0; font-weight: bold">0.0309</td>
 <td class="gt_row gt_right" headers="GLM_Est" style="background-color: #FFF3E0; font-weight: bold">0.2076</td>
 <td class="gt_row gt_right" headers="GLM_SE" style="background-color: #FFF3E0; font-weight: bold">0.0309</td>
 </tr>
@@ -1052,7 +1079,7 @@ glm() benchmark
 <ul>
 <li><strong>Age</strong> is positive and <strong>Age²</strong> is negative — an inverted-U relationship where patent output rises with maturity then eventually declines.</li>
 <li><strong>Regional dummies</strong> are mostly small relative to the Northeast baseline.</li>
-<li><strong>Blueprinty Customer</strong> is positive and highly significant. Being a customer multiplies the expected patent rate by <span class="math inline">\(e^{\hat\beta} \approx\)</span> 1.063, roughly a <strong>6.3% increase</strong>, holding age and region fixed.</li>
+<li><strong>Blueprinty Customer</strong> is positive and highly significant. Being a customer multiplies the expected patent rate by <span class="math inline">\(e^{\hat\beta} \approx\)</span> 1.231, roughly a <strong>23.1% increase</strong>, holding age and region fixed.</li>
 </ul>
 <hr>
 </section>
@@ -1082,7 +1109,7 @@ glm() benchmark
 </div>
 </div>
 <blockquote class="blockquote">
-<p><strong>Key finding:</strong> Adopting Blueprinty’s software is associated with approximately <strong>0.22 additional patents</strong> over five years, after controlling for firm age and region.</p>
+<p><strong>Key finding:</strong> Adopting Blueprinty’s software is associated with approximately <strong>0.793 additional patents</strong> over five years, after controlling for firm age and region.</p>
 </blockquote>
 <section id="what-this-means-and-what-it-doesnt" class="level3">
 <h3 class="anchored" data-anchor-id="what-this-means-and-what-it-doesnt">What This Means — and What It Doesn’t</h3>
@@ -1551,7 +1578,7 @@ glm() benchmark
   });
   </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Does Blueprinty's Software Actually Help Win Patents?"</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Poisson Regression: Blueprinty Patent Analysis"</span></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "A Maximum Likelihood Deep-Dive into Poisson Regression"</span></span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> "Ziyao"</span></span>
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> today</span></span>
@@ -1809,117 +1836,119 @@ glm() benchmark
 <span id="cb13-257"><a href="#cb13-257" aria-hidden="true" tabindex="-1"></a><span class="fu">### Finding the MLE with optim()</span></span>
 <span id="cb13-258"><a href="#cb13-258" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-259"><a href="#cb13-259" aria-hidden="true" tabindex="-1"></a><span class="in">```{r optim-regr}</span></span>
-<span id="cb13-260"><a href="#cb13-260" aria-hidden="true" tabindex="-1"></a>beta_init <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">ncol</span>(X))</span>
-<span id="cb13-261"><a href="#cb13-261" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-262"><a href="#cb13-262" aria-hidden="true" tabindex="-1"></a>result_reg <span class="ot">&lt;-</span> <span class="fu">optim</span>(</span>
-<span id="cb13-263"><a href="#cb13-263" aria-hidden="true" tabindex="-1"></a>  <span class="at">par     =</span> beta_init,</span>
-<span id="cb13-264"><a href="#cb13-264" aria-hidden="true" tabindex="-1"></a>  <span class="at">fn      =</span> <span class="cf">function</span>(b) <span class="sc">-</span><span class="fu">poisson_regression_loglikelihood</span>(b, Y2, X),</span>
-<span id="cb13-265"><a href="#cb13-265" aria-hidden="true" tabindex="-1"></a>  <span class="at">method  =</span> <span class="st">"BFGS"</span>,</span>
-<span id="cb13-266"><a href="#cb13-266" aria-hidden="true" tabindex="-1"></a>  <span class="at">hessian =</span> <span class="cn">TRUE</span></span>
-<span id="cb13-267"><a href="#cb13-267" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb13-268"><a href="#cb13-268" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-269"><a href="#cb13-269" aria-hidden="true" tabindex="-1"></a>beta_hat <span class="ot">&lt;-</span> result_reg<span class="sc">$</span>par</span>
-<span id="cb13-270"><a href="#cb13-270" aria-hidden="true" tabindex="-1"></a>se_hat   <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">diag</span>(<span class="fu">solve</span>(result_reg<span class="sc">$</span>hessian)))</span>
-<span id="cb13-271"><a href="#cb13-271" aria-hidden="true" tabindex="-1"></a>z_vals   <span class="ot">&lt;-</span> beta_hat <span class="sc">/</span> se_hat</span>
-<span id="cb13-272"><a href="#cb13-272" aria-hidden="true" tabindex="-1"></a>p_vals   <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">pnorm</span>(<span class="sc">-</span><span class="fu">abs</span>(z_vals))</span>
-<span id="cb13-273"><a href="#cb13-273" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-274"><a href="#cb13-274" aria-hidden="true" tabindex="-1"></a>coef_names <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Intercept"</span>, <span class="st">"Age"</span>, <span class="st">"Age²"</span>,</span>
-<span id="cb13-275"><a href="#cb13-275" aria-hidden="true" tabindex="-1"></a>                <span class="st">"Region: Midwest"</span>, <span class="st">"Region: Northwest"</span>,</span>
-<span id="cb13-276"><a href="#cb13-276" aria-hidden="true" tabindex="-1"></a>                <span class="st">"Region: South"</span>, <span class="st">"Region: Southwest"</span>,</span>
-<span id="cb13-277"><a href="#cb13-277" aria-hidden="true" tabindex="-1"></a>                <span class="st">"Blueprinty Customer"</span>)</span>
-<span id="cb13-278"><a href="#cb13-278" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb13-279"><a href="#cb13-279" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-280"><a href="#cb13-280" aria-hidden="true" tabindex="-1"></a><span class="fu">### Results: MLE vs GLM</span></span>
+<span id="cb13-260"><a href="#cb13-260" aria-hidden="true" tabindex="-1"></a>glm_init <span class="ot">&lt;-</span> <span class="fu">glm</span>(patents <span class="sc">~</span> age <span class="sc">+</span> <span class="fu">I</span>(age<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> r_mw <span class="sc">+</span> r_nw <span class="sc">+</span> r_s <span class="sc">+</span> r_sw <span class="sc">+</span> iscust,</span>
+<span id="cb13-261"><a href="#cb13-261" aria-hidden="true" tabindex="-1"></a>                <span class="at">data =</span> df2, <span class="at">family =</span> <span class="fu">poisson</span>(<span class="at">link =</span> <span class="st">"log"</span>))</span>
+<span id="cb13-262"><a href="#cb13-262" aria-hidden="true" tabindex="-1"></a>beta_init <span class="ot">&lt;-</span> <span class="fu">coef</span>(glm_init)</span>
+<span id="cb13-263"><a href="#cb13-263" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-264"><a href="#cb13-264" aria-hidden="true" tabindex="-1"></a>result_reg <span class="ot">&lt;-</span> <span class="fu">optim</span>(</span>
+<span id="cb13-265"><a href="#cb13-265" aria-hidden="true" tabindex="-1"></a>  <span class="at">par     =</span> beta_init,</span>
+<span id="cb13-266"><a href="#cb13-266" aria-hidden="true" tabindex="-1"></a>  <span class="at">fn      =</span> <span class="cf">function</span>(b) <span class="sc">-</span><span class="fu">poisson_regression_loglikelihood</span>(b, Y2, X),</span>
+<span id="cb13-267"><a href="#cb13-267" aria-hidden="true" tabindex="-1"></a>  <span class="at">method  =</span> <span class="st">"BFGS"</span>,</span>
+<span id="cb13-268"><a href="#cb13-268" aria-hidden="true" tabindex="-1"></a>  <span class="at">hessian =</span> <span class="cn">TRUE</span></span>
+<span id="cb13-269"><a href="#cb13-269" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-270"><a href="#cb13-270" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-271"><a href="#cb13-271" aria-hidden="true" tabindex="-1"></a>beta_hat <span class="ot">&lt;-</span> result_reg<span class="sc">$</span>par</span>
+<span id="cb13-272"><a href="#cb13-272" aria-hidden="true" tabindex="-1"></a>se_hat   <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">diag</span>(<span class="fu">solve</span>(result_reg<span class="sc">$</span>hessian)))</span>
+<span id="cb13-273"><a href="#cb13-273" aria-hidden="true" tabindex="-1"></a>z_vals   <span class="ot">&lt;-</span> beta_hat <span class="sc">/</span> se_hat</span>
+<span id="cb13-274"><a href="#cb13-274" aria-hidden="true" tabindex="-1"></a>p_vals   <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">pnorm</span>(<span class="sc">-</span><span class="fu">abs</span>(z_vals))</span>
+<span id="cb13-275"><a href="#cb13-275" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-276"><a href="#cb13-276" aria-hidden="true" tabindex="-1"></a>coef_names <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Intercept"</span>, <span class="st">"Age"</span>, <span class="st">"Age²"</span>,</span>
+<span id="cb13-277"><a href="#cb13-277" aria-hidden="true" tabindex="-1"></a>                <span class="st">"Region: Midwest"</span>, <span class="st">"Region: Northwest"</span>,</span>
+<span id="cb13-278"><a href="#cb13-278" aria-hidden="true" tabindex="-1"></a>                <span class="st">"Region: South"</span>, <span class="st">"Region: Southwest"</span>,</span>
+<span id="cb13-279"><a href="#cb13-279" aria-hidden="true" tabindex="-1"></a>                <span class="st">"Blueprinty Customer"</span>)</span>
+<span id="cb13-280"><a href="#cb13-280" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb13-281"><a href="#cb13-281" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-282"><a href="#cb13-282" aria-hidden="true" tabindex="-1"></a><span class="in">```{r glm-check}</span></span>
-<span id="cb13-283"><a href="#cb13-283" aria-hidden="true" tabindex="-1"></a>glm_fit <span class="ot">&lt;-</span> <span class="fu">glm</span>(patents <span class="sc">~</span> age <span class="sc">+</span> <span class="fu">I</span>(age<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> r_mw <span class="sc">+</span> r_nw <span class="sc">+</span> r_s <span class="sc">+</span> r_sw <span class="sc">+</span> iscust,</span>
-<span id="cb13-284"><a href="#cb13-284" aria-hidden="true" tabindex="-1"></a>               <span class="at">data =</span> df2, <span class="at">family =</span> <span class="fu">poisson</span>(<span class="at">link =</span> <span class="st">"log"</span>))</span>
-<span id="cb13-285"><a href="#cb13-285" aria-hidden="true" tabindex="-1"></a>glm_coefs <span class="ot">&lt;-</span> <span class="fu">coef</span>(<span class="fu">summary</span>(glm_fit))</span>
-<span id="cb13-286"><a href="#cb13-286" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-287"><a href="#cb13-287" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(</span>
-<span id="cb13-288"><a href="#cb13-288" aria-hidden="true" tabindex="-1"></a>  <span class="at">Term    =</span> coef_names,</span>
-<span id="cb13-289"><a href="#cb13-289" aria-hidden="true" tabindex="-1"></a>  <span class="at">MLE_Est =</span> <span class="fu">round</span>(beta_hat, <span class="dv">4</span>),</span>
-<span id="cb13-290"><a href="#cb13-290" aria-hidden="true" tabindex="-1"></a>  <span class="at">MLE_SE  =</span> <span class="fu">round</span>(se_hat, <span class="dv">4</span>),</span>
-<span id="cb13-291"><a href="#cb13-291" aria-hidden="true" tabindex="-1"></a>  <span class="at">GLM_Est =</span> <span class="fu">round</span>(glm_coefs[, <span class="dv">1</span>], <span class="dv">4</span>),</span>
-<span id="cb13-292"><a href="#cb13-292" aria-hidden="true" tabindex="-1"></a>  <span class="at">GLM_SE  =</span> <span class="fu">round</span>(glm_coefs[, <span class="dv">2</span>], <span class="dv">4</span>)</span>
-<span id="cb13-293"><a href="#cb13-293" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
-<span id="cb13-294"><a href="#cb13-294" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">|&gt;</span></span>
-<span id="cb13-295"><a href="#cb13-295" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(</span>
-<span id="cb13-296"><a href="#cb13-296" aria-hidden="true" tabindex="-1"></a>    <span class="at">title    =</span> <span class="fu">md</span>(<span class="st">"**Poisson Regression: MLE vs. GLM**"</span>),</span>
-<span id="cb13-297"><a href="#cb13-297" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Reference category: Northeast region"</span></span>
-<span id="cb13-298"><a href="#cb13-298" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb13-299"><a href="#cb13-299" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_spanner</span>(<span class="at">label =</span> <span class="st">"Our MLE (optim)"</span>, <span class="at">columns =</span> <span class="fu">c</span>(MLE_Est, MLE_SE)) <span class="sc">|&gt;</span></span>
-<span id="cb13-300"><a href="#cb13-300" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_spanner</span>(<span class="at">label =</span> <span class="st">"glm() benchmark"</span>,  <span class="at">columns =</span> <span class="fu">c</span>(GLM_Est, GLM_SE)) <span class="sc">|&gt;</span></span>
-<span id="cb13-301"><a href="#cb13-301" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(</span>
-<span id="cb13-302"><a href="#cb13-302" aria-hidden="true" tabindex="-1"></a>    <span class="at">Term    =</span> <span class="st">"Coefficient"</span>,</span>
-<span id="cb13-303"><a href="#cb13-303" aria-hidden="true" tabindex="-1"></a>    <span class="at">MLE_Est =</span> <span class="st">"Estimate"</span>, <span class="at">MLE_SE =</span> <span class="st">"Std. Error"</span>,</span>
-<span id="cb13-304"><a href="#cb13-304" aria-hidden="true" tabindex="-1"></a>    <span class="at">GLM_Est =</span> <span class="st">"Estimate"</span>, <span class="at">GLM_SE =</span> <span class="st">"Std. Error"</span></span>
-<span id="cb13-305"><a href="#cb13-305" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb13-306"><a href="#cb13-306" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fmt_number</span>(<span class="at">columns =</span> <span class="fu">where</span>(is.numeric), <span class="at">decimals =</span> <span class="dv">4</span>) <span class="sc">|&gt;</span></span>
-<span id="cb13-307"><a href="#cb13-307" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_style</span>(</span>
-<span id="cb13-308"><a href="#cb13-308" aria-hidden="true" tabindex="-1"></a>    <span class="at">style =</span> <span class="fu">cell_fill</span>(<span class="at">color =</span> <span class="st">"#FFF3E0"</span>),</span>
-<span id="cb13-309"><a href="#cb13-309" aria-hidden="true" tabindex="-1"></a>    <span class="at">locations =</span> <span class="fu">cells_body</span>(<span class="at">rows =</span> Term <span class="sc">==</span> <span class="st">"Blueprinty Customer"</span>)</span>
-<span id="cb13-310"><a href="#cb13-310" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb13-311"><a href="#cb13-311" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_style</span>(</span>
-<span id="cb13-312"><a href="#cb13-312" aria-hidden="true" tabindex="-1"></a>    <span class="at">style =</span> <span class="fu">cell_text</span>(<span class="at">weight =</span> <span class="st">"bold"</span>),</span>
-<span id="cb13-313"><a href="#cb13-313" aria-hidden="true" tabindex="-1"></a>    <span class="at">locations =</span> <span class="fu">cells_body</span>(<span class="at">rows =</span> Term <span class="sc">==</span> <span class="st">"Blueprinty Customer"</span>)</span>
-<span id="cb13-314"><a href="#cb13-314" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb13-315"><a href="#cb13-315" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_options</span>(<span class="at">table.font.size =</span> <span class="dv">13</span>, <span class="at">heading.align =</span> <span class="st">"left"</span>)</span>
-<span id="cb13-316"><a href="#cb13-316" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb13-317"><a href="#cb13-317" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-318"><a href="#cb13-318" aria-hidden="true" tabindex="-1"></a>Our hand-coded MLE estimates match <span class="in">`glm()`</span> almost perfectly. Small differences in standard errors are expected: <span class="in">`glm()`</span> uses the analytically derived expected Fisher information, while our approach uses a numerical approximation of the observed Hessian. Both are consistent estimators.</span>
+<span id="cb13-282"><a href="#cb13-282" aria-hidden="true" tabindex="-1"></a><span class="fu">### Results: MLE vs GLM</span></span>
+<span id="cb13-283"><a href="#cb13-283" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-284"><a href="#cb13-284" aria-hidden="true" tabindex="-1"></a><span class="in">```{r glm-check}</span></span>
+<span id="cb13-285"><a href="#cb13-285" aria-hidden="true" tabindex="-1"></a>glm_fit <span class="ot">&lt;-</span> <span class="fu">glm</span>(patents <span class="sc">~</span> age <span class="sc">+</span> <span class="fu">I</span>(age<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> r_mw <span class="sc">+</span> r_nw <span class="sc">+</span> r_s <span class="sc">+</span> r_sw <span class="sc">+</span> iscust,</span>
+<span id="cb13-286"><a href="#cb13-286" aria-hidden="true" tabindex="-1"></a>               <span class="at">data =</span> df2, <span class="at">family =</span> <span class="fu">poisson</span>(<span class="at">link =</span> <span class="st">"log"</span>))</span>
+<span id="cb13-287"><a href="#cb13-287" aria-hidden="true" tabindex="-1"></a>glm_coefs <span class="ot">&lt;-</span> <span class="fu">coef</span>(<span class="fu">summary</span>(glm_fit))</span>
+<span id="cb13-288"><a href="#cb13-288" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-289"><a href="#cb13-289" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(</span>
+<span id="cb13-290"><a href="#cb13-290" aria-hidden="true" tabindex="-1"></a>  <span class="at">Term    =</span> coef_names,</span>
+<span id="cb13-291"><a href="#cb13-291" aria-hidden="true" tabindex="-1"></a>  <span class="at">MLE_Est =</span> <span class="fu">round</span>(beta_hat, <span class="dv">4</span>),</span>
+<span id="cb13-292"><a href="#cb13-292" aria-hidden="true" tabindex="-1"></a>  <span class="at">MLE_SE  =</span> <span class="fu">round</span>(se_hat, <span class="dv">4</span>),</span>
+<span id="cb13-293"><a href="#cb13-293" aria-hidden="true" tabindex="-1"></a>  <span class="at">GLM_Est =</span> <span class="fu">round</span>(glm_coefs[, <span class="dv">1</span>], <span class="dv">4</span>),</span>
+<span id="cb13-294"><a href="#cb13-294" aria-hidden="true" tabindex="-1"></a>  <span class="at">GLM_SE  =</span> <span class="fu">round</span>(glm_coefs[, <span class="dv">2</span>], <span class="dv">4</span>)</span>
+<span id="cb13-295"><a href="#cb13-295" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb13-296"><a href="#cb13-296" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">|&gt;</span></span>
+<span id="cb13-297"><a href="#cb13-297" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(</span>
+<span id="cb13-298"><a href="#cb13-298" aria-hidden="true" tabindex="-1"></a>    <span class="at">title    =</span> <span class="fu">md</span>(<span class="st">"**Poisson Regression: MLE vs. GLM**"</span>),</span>
+<span id="cb13-299"><a href="#cb13-299" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Reference category: Northeast region"</span></span>
+<span id="cb13-300"><a href="#cb13-300" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb13-301"><a href="#cb13-301" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_spanner</span>(<span class="at">label =</span> <span class="st">"Our MLE (optim)"</span>, <span class="at">columns =</span> <span class="fu">c</span>(MLE_Est, MLE_SE)) <span class="sc">|&gt;</span></span>
+<span id="cb13-302"><a href="#cb13-302" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_spanner</span>(<span class="at">label =</span> <span class="st">"glm() benchmark"</span>,  <span class="at">columns =</span> <span class="fu">c</span>(GLM_Est, GLM_SE)) <span class="sc">|&gt;</span></span>
+<span id="cb13-303"><a href="#cb13-303" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(</span>
+<span id="cb13-304"><a href="#cb13-304" aria-hidden="true" tabindex="-1"></a>    <span class="at">Term    =</span> <span class="st">"Coefficient"</span>,</span>
+<span id="cb13-305"><a href="#cb13-305" aria-hidden="true" tabindex="-1"></a>    <span class="at">MLE_Est =</span> <span class="st">"Estimate"</span>, <span class="at">MLE_SE =</span> <span class="st">"Std. Error"</span>,</span>
+<span id="cb13-306"><a href="#cb13-306" aria-hidden="true" tabindex="-1"></a>    <span class="at">GLM_Est =</span> <span class="st">"Estimate"</span>, <span class="at">GLM_SE =</span> <span class="st">"Std. Error"</span></span>
+<span id="cb13-307"><a href="#cb13-307" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb13-308"><a href="#cb13-308" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fmt_number</span>(<span class="at">columns =</span> <span class="fu">where</span>(is.numeric), <span class="at">decimals =</span> <span class="dv">4</span>) <span class="sc">|&gt;</span></span>
+<span id="cb13-309"><a href="#cb13-309" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_style</span>(</span>
+<span id="cb13-310"><a href="#cb13-310" aria-hidden="true" tabindex="-1"></a>    <span class="at">style =</span> <span class="fu">cell_fill</span>(<span class="at">color =</span> <span class="st">"#FFF3E0"</span>),</span>
+<span id="cb13-311"><a href="#cb13-311" aria-hidden="true" tabindex="-1"></a>    <span class="at">locations =</span> <span class="fu">cells_body</span>(<span class="at">rows =</span> Term <span class="sc">==</span> <span class="st">"Blueprinty Customer"</span>)</span>
+<span id="cb13-312"><a href="#cb13-312" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb13-313"><a href="#cb13-313" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_style</span>(</span>
+<span id="cb13-314"><a href="#cb13-314" aria-hidden="true" tabindex="-1"></a>    <span class="at">style =</span> <span class="fu">cell_text</span>(<span class="at">weight =</span> <span class="st">"bold"</span>),</span>
+<span id="cb13-315"><a href="#cb13-315" aria-hidden="true" tabindex="-1"></a>    <span class="at">locations =</span> <span class="fu">cells_body</span>(<span class="at">rows =</span> Term <span class="sc">==</span> <span class="st">"Blueprinty Customer"</span>)</span>
+<span id="cb13-316"><a href="#cb13-316" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb13-317"><a href="#cb13-317" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_options</span>(<span class="at">table.font.size =</span> <span class="dv">13</span>, <span class="at">heading.align =</span> <span class="st">"left"</span>)</span>
+<span id="cb13-318"><a href="#cb13-318" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb13-319"><a href="#cb13-319" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-320"><a href="#cb13-320" aria-hidden="true" tabindex="-1"></a><span class="fu">### Interpretation</span></span>
+<span id="cb13-320"><a href="#cb13-320" aria-hidden="true" tabindex="-1"></a>Our hand-coded MLE estimates match <span class="in">`glm()`</span> almost perfectly. Small differences in standard errors are expected: <span class="in">`glm()`</span> uses the analytically derived expected Fisher information, while our approach uses a numerical approximation of the observed Hessian. Both are consistent estimators.</span>
 <span id="cb13-321"><a href="#cb13-321" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-322"><a href="#cb13-322" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Age** is positive and **Age²** is negative — an inverted-U relationship where patent output rises with maturity then eventually declines.</span>
-<span id="cb13-323"><a href="#cb13-323" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Regional dummies** are mostly small relative to the Northeast baseline.</span>
-<span id="cb13-324"><a href="#cb13-324" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Blueprinty Customer** is positive and highly significant. Being a customer multiplies the expected patent rate by $e^{\hat\beta} \approx$ `r round(exp(beta_hat[8]), 3)`, roughly a **`r round((exp(beta_hat[8])-1)*100, 1)`% increase**, holding age and region fixed.</span>
-<span id="cb13-325"><a href="#cb13-325" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-326"><a href="#cb13-326" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb13-322"><a href="#cb13-322" aria-hidden="true" tabindex="-1"></a><span class="fu">### Interpretation</span></span>
+<span id="cb13-323"><a href="#cb13-323" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-324"><a href="#cb13-324" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Age** is positive and **Age²** is negative — an inverted-U relationship where patent output rises with maturity then eventually declines.</span>
+<span id="cb13-325"><a href="#cb13-325" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Regional dummies** are mostly small relative to the Northeast baseline.</span>
+<span id="cb13-326"><a href="#cb13-326" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Blueprinty Customer** is positive and highly significant. Being a customer multiplies the expected patent rate by $e^{\hat\beta} \approx$ `r round(exp(beta_hat[8]), 3)`, roughly a **`r round((exp(beta_hat[8])-1)*100, 1)`% increase**, holding age and region fixed.</span>
 <span id="cb13-327"><a href="#cb13-327" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-328"><a href="#cb13-328" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-329"><a href="#cb13-329" aria-hidden="true" tabindex="-1"></a><span class="fu">## The Effect of Blueprinty's Software</span></span>
+<span id="cb13-328"><a href="#cb13-328" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb13-329"><a href="#cb13-329" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-330"><a href="#cb13-330" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-331"><a href="#cb13-331" aria-hidden="true" tabindex="-1"></a>Because the model is multiplicative, we use counterfactual prediction to get an interpretable absolute effect. We create two copies of the design matrix — one where every firm is a non-customer, one where every firm is a customer — and predict expected patents under each scenario.</span>
+<span id="cb13-331"><a href="#cb13-331" aria-hidden="true" tabindex="-1"></a><span class="fu">## The Effect of Blueprinty's Software</span></span>
 <span id="cb13-332"><a href="#cb13-332" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-333"><a href="#cb13-333" aria-hidden="true" tabindex="-1"></a><span class="in">```{r counterfactual}</span></span>
-<span id="cb13-334"><a href="#cb13-334" aria-hidden="true" tabindex="-1"></a>X0 <span class="ot">&lt;-</span> X; X0[, <span class="st">"iscust"</span>] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb13-335"><a href="#cb13-335" aria-hidden="true" tabindex="-1"></a>X1 <span class="ot">&lt;-</span> X; X1[, <span class="st">"iscust"</span>] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb13-336"><a href="#cb13-336" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-337"><a href="#cb13-337" aria-hidden="true" tabindex="-1"></a>yhat0 <span class="ot">&lt;-</span> <span class="fu">exp</span>(X0 <span class="sc">%*%</span> beta_hat)</span>
-<span id="cb13-338"><a href="#cb13-338" aria-hidden="true" tabindex="-1"></a>yhat1 <span class="ot">&lt;-</span> <span class="fu">exp</span>(X1 <span class="sc">%*%</span> beta_hat)</span>
-<span id="cb13-339"><a href="#cb13-339" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-340"><a href="#cb13-340" aria-hidden="true" tabindex="-1"></a>avg_effect <span class="ot">&lt;-</span> <span class="fu">mean</span>(yhat1 <span class="sc">-</span> yhat0)</span>
-<span id="cb13-341"><a href="#cb13-341" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb13-342"><a href="#cb13-342" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-343"><a href="#cb13-343" aria-hidden="true" tabindex="-1"></a><span class="in">```{r effect-plot, echo=FALSE, fig.width=8, fig.height=4}</span></span>
-<span id="cb13-344"><a href="#cb13-344" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">diff =</span> <span class="fu">as.vector</span>(yhat1 <span class="sc">-</span> yhat0)) <span class="sc">|&gt;</span></span>
-<span id="cb13-345"><a href="#cb13-345" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> diff)) <span class="sc">+</span></span>
-<span id="cb13-346"><a href="#cb13-346" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">40</span>, <span class="at">fill =</span> <span class="st">"#4A90D9"</span>, <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">alpha =</span> <span class="fl">0.85</span>) <span class="sc">+</span></span>
-<span id="cb13-347"><a href="#cb13-347" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> avg_effect, <span class="at">linetype =</span> <span class="st">"dashed"</span>,</span>
-<span id="cb13-348"><a href="#cb13-348" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> <span class="st">"#E87040"</span>, <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb13-349"><a href="#cb13-349" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> avg_effect <span class="sc">+</span> <span class="fl">0.02</span>, <span class="at">y =</span> <span class="cn">Inf</span>, <span class="at">vjust =</span> <span class="dv">2</span>,</span>
-<span id="cb13-350"><a href="#cb13-350" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">"Avg = "</span>, <span class="fu">round</span>(avg_effect, <span class="dv">3</span>)),</span>
-<span id="cb13-351"><a href="#cb13-351" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"#E87040"</span>, <span class="at">size =</span> <span class="dv">4</span>, <span class="at">hjust =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
-<span id="cb13-352"><a href="#cb13-352" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Predicted Patent Gain from Blueprinty"</span>,</span>
-<span id="cb13-353"><a href="#cb13-353" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Per-firm difference: predicted patents if customer minus if not"</span>,</span>
-<span id="cb13-354"><a href="#cb13-354" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Predicted additional patents (ŷ₁ − ŷ₀)"</span>, <span class="at">y =</span> <span class="st">"Firms"</span>) <span class="sc">+</span></span>
-<span id="cb13-355"><a href="#cb13-355" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">13</span>)</span>
-<span id="cb13-356"><a href="#cb13-356" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb13-357"><a href="#cb13-357" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-358"><a href="#cb13-358" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; **Key finding:** Adopting Blueprinty's software is associated with approximately **`r round(avg_effect, 3)` additional patents** over five years, after controlling for firm age and region.</span></span>
+<span id="cb13-333"><a href="#cb13-333" aria-hidden="true" tabindex="-1"></a>Because the model is multiplicative, we use counterfactual prediction to get an interpretable absolute effect. We create two copies of the design matrix — one where every firm is a non-customer, one where every firm is a customer — and predict expected patents under each scenario.</span>
+<span id="cb13-334"><a href="#cb13-334" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-335"><a href="#cb13-335" aria-hidden="true" tabindex="-1"></a><span class="in">```{r counterfactual}</span></span>
+<span id="cb13-336"><a href="#cb13-336" aria-hidden="true" tabindex="-1"></a>X0 <span class="ot">&lt;-</span> X; X0[, <span class="st">"iscust"</span>] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb13-337"><a href="#cb13-337" aria-hidden="true" tabindex="-1"></a>X1 <span class="ot">&lt;-</span> X; X1[, <span class="st">"iscust"</span>] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb13-338"><a href="#cb13-338" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-339"><a href="#cb13-339" aria-hidden="true" tabindex="-1"></a>yhat0 <span class="ot">&lt;-</span> <span class="fu">exp</span>(X0 <span class="sc">%*%</span> beta_hat)</span>
+<span id="cb13-340"><a href="#cb13-340" aria-hidden="true" tabindex="-1"></a>yhat1 <span class="ot">&lt;-</span> <span class="fu">exp</span>(X1 <span class="sc">%*%</span> beta_hat)</span>
+<span id="cb13-341"><a href="#cb13-341" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-342"><a href="#cb13-342" aria-hidden="true" tabindex="-1"></a>avg_effect <span class="ot">&lt;-</span> <span class="fu">mean</span>(yhat1 <span class="sc">-</span> yhat0)</span>
+<span id="cb13-343"><a href="#cb13-343" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-344"><a href="#cb13-344" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-345"><a href="#cb13-345" aria-hidden="true" tabindex="-1"></a><span class="in">```{r effect-plot, echo=FALSE, fig.width=8, fig.height=4}</span></span>
+<span id="cb13-346"><a href="#cb13-346" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">diff =</span> <span class="fu">as.vector</span>(yhat1 <span class="sc">-</span> yhat0)) <span class="sc">|&gt;</span></span>
+<span id="cb13-347"><a href="#cb13-347" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> diff)) <span class="sc">+</span></span>
+<span id="cb13-348"><a href="#cb13-348" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">40</span>, <span class="at">fill =</span> <span class="st">"#4A90D9"</span>, <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">alpha =</span> <span class="fl">0.85</span>) <span class="sc">+</span></span>
+<span id="cb13-349"><a href="#cb13-349" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> avg_effect, <span class="at">linetype =</span> <span class="st">"dashed"</span>,</span>
+<span id="cb13-350"><a href="#cb13-350" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> <span class="st">"#E87040"</span>, <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb13-351"><a href="#cb13-351" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> avg_effect <span class="sc">+</span> <span class="fl">0.02</span>, <span class="at">y =</span> <span class="cn">Inf</span>, <span class="at">vjust =</span> <span class="dv">2</span>,</span>
+<span id="cb13-352"><a href="#cb13-352" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">"Avg = "</span>, <span class="fu">round</span>(avg_effect, <span class="dv">3</span>)),</span>
+<span id="cb13-353"><a href="#cb13-353" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"#E87040"</span>, <span class="at">size =</span> <span class="dv">4</span>, <span class="at">hjust =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb13-354"><a href="#cb13-354" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Predicted Patent Gain from Blueprinty"</span>,</span>
+<span id="cb13-355"><a href="#cb13-355" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Per-firm difference: predicted patents if customer minus if not"</span>,</span>
+<span id="cb13-356"><a href="#cb13-356" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Predicted additional patents (ŷ₁ − ŷ₀)"</span>, <span class="at">y =</span> <span class="st">"Firms"</span>) <span class="sc">+</span></span>
+<span id="cb13-357"><a href="#cb13-357" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">13</span>)</span>
+<span id="cb13-358"><a href="#cb13-358" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb13-359"><a href="#cb13-359" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-360"><a href="#cb13-360" aria-hidden="true" tabindex="-1"></a><span class="fu">### What This Means — and What It Doesn't</span></span>
+<span id="cb13-360"><a href="#cb13-360" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; **Key finding:** Adopting Blueprinty's software is associated with approximately **`r round(avg_effect, 3)` additional patents** over five years, after controlling for firm age and region.</span></span>
 <span id="cb13-361"><a href="#cb13-361" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-362"><a href="#cb13-362" aria-hidden="true" tabindex="-1"></a>This estimate is more credible than a raw mean comparison because we've held firm age and region constant. After adjusting for those confounders, Blueprinty customers still appear to win more patents.</span>
+<span id="cb13-362"><a href="#cb13-362" aria-hidden="true" tabindex="-1"></a><span class="fu">### What This Means — and What It Doesn't</span></span>
 <span id="cb13-363"><a href="#cb13-363" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-364"><a href="#cb13-364" aria-hidden="true" tabindex="-1"></a>That said, **this is an observational study, not a randomized experiment.** We cannot rule out unobserved differences between customers and non-customers — for example, customers may be more innovation-focused, better-funded, or have stronger in-house patent attorneys. Any of these could independently drive both the decision to adopt Blueprinty and the number of patents awarded.</span>
+<span id="cb13-364"><a href="#cb13-364" aria-hidden="true" tabindex="-1"></a>This estimate is more credible than a raw mean comparison because we've held firm age and region constant. After adjusting for those confounders, Blueprinty customers still appear to win more patents.</span>
 <span id="cb13-365"><a href="#cb13-365" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-366"><a href="#cb13-366" aria-hidden="true" tabindex="-1"></a>The results are *consistent with* Blueprinty's marketing claim and provide meaningful supporting evidence. But they do not establish causation. A rigorous causal estimate would require either a randomized rollout, a natural experiment, or richer panel data tracking firms before and after adoption.</span>
+<span id="cb13-366"><a href="#cb13-366" aria-hidden="true" tabindex="-1"></a>That said, **this is an observational study, not a randomized experiment.** We cannot rule out unobserved differences between customers and non-customers — for example, customers may be more innovation-focused, better-funded, or have stronger in-house patent attorneys. Any of these could independently drive both the decision to adopt Blueprinty and the number of patents awarded.</span>
 <span id="cb13-367"><a href="#cb13-367" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-368"><a href="#cb13-368" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb13-368"><a href="#cb13-368" aria-hidden="true" tabindex="-1"></a>The results are *consistent with* Blueprinty's marketing claim and provide meaningful supporting evidence. But they do not establish causation. A rigorous causal estimate would require either a randomized rollout, a natural experiment, or richer panel data tracking firms before and after adoption.</span>
 <span id="cb13-369"><a href="#cb13-369" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-370"><a href="#cb13-370" aria-hidden="true" tabindex="-1"></a>*Analysis in R using `tidyverse`, `gt`, and `patchwork`. MLE estimated with `optim()` and verified against `glm(..., family = poisson)`.*</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb13-370"><a href="#cb13-370" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb13-371"><a href="#cb13-371" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-372"><a href="#cb13-372" aria-hidden="true" tabindex="-1"></a>*Analysis in R using `tidyverse`, `gt`, and `patchwork`. MLE estimated with `optim()` and verified against `glm(..., family = poisson)`.*</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

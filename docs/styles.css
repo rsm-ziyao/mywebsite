@@ -190,4 +190,32 @@ h1,h2,h3 { letter-spacing:-.05em; }
 .profile-contact { display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:start; }
 .profile-contact h2 { font-size:2.4rem; line-height:1; margin:0; }
 .profile-contact a { text-decoration:none; }
+.fit-section { background:rgba(255,255,255,.42); margin-left:-3vw; margin-right:-3vw; padding-left:3vw; padding-right:3vw; }
+.fit-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; }
+.fit-grid>div { padding:1.5rem; background:#fff; border:1px solid var(--line); border-top:3px solid var(--blue); }
+.fit-label,.detail-label,.narrative-label { color:var(--blue); font-size:.7rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase; }
+.fit-grid h3 { font-size:1.25rem; margin:.8rem 0 .7rem; }
+.fit-grid p { color:var(--muted); font-size:.86rem; line-height:1.6; margin-bottom:1.2rem; }
+.fit-signal { color:var(--ink-2); font-size:.72rem; font-weight:700; line-height:1.4; }
+.process-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; }
+.process-grid>div { border-top:2px solid var(--coral); padding-top:1rem; }
+.process-grid strong { font-size:1.1rem; }
+.process-grid p { color:var(--muted); font-size:.84rem; line-height:1.55; margin:.55rem 0 0; }
+.portfolio-signals { display:flex; flex-wrap:wrap; gap:1rem 2rem; margin-top:2rem; padding-top:1.2rem; border-top:1px solid var(--line); color:var(--muted); font-size:.78rem; }
+.portfolio-signals strong { display:inline-block; color:var(--blue); font-size:1.3rem; margin-right:.35rem; }
+.project-detail-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin-top:1rem; }
+.project-detail-grid>div { padding:1.3rem 0; border-top:2px solid var(--coral); }
+.project-detail-grid p { color:var(--muted); font-size:.84rem; line-height:1.6; margin:.65rem 0 0; }
+.card-signal { display:block; margin:1rem 0; padding-top:.85rem; border-top:1px solid var(--line); color:var(--ink-2); font-size:.72rem; font-weight:700; line-height:1.4; }
+.hiring-section { padding-bottom:4rem; }
+.hiring-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2rem; }
+.hiring-grid>div { border-top:2px solid var(--blue); padding-top:1rem; }
+.hiring-grid strong { font-size:1.1rem; }
+.hiring-grid p { color:var(--muted); font-size:.86rem; line-height:1.6; margin:.55rem 0 0; }
+.narrative-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; }
+.narrative-grid>div { padding:1.5rem; background:#fff; border:1px solid var(--line); }
+.narrative-grid h3 { font-size:1.22rem; margin:.7rem 0 .65rem; }
+.narrative-grid p { color:var(--muted); font-size:.86rem; line-height:1.65; margin:0; }
+.evidence-line { display:block; margin-top:1.2rem; color:var(--blue); font-size:.72rem; font-weight:800; letter-spacing:.04em; }
 @media (max-width:800px) { .hr-hero,.featured-home-card,.closing-section,.profile-summary-grid,.profile-contact { grid-template-columns:1fr; gap:2rem; } .hr-hero { padding:4rem 0; } .hr-hero-card { box-shadow:8px 8px 0 var(--coral); } .proof-bar,.capability-grid,.supporting-grid,.compact-experience-grid,.education-list,.experience-map,.skill-matrix { grid-template-columns:1fr; } .proof-bar>div { border-right:0; border-bottom:1px solid var(--line); padding-bottom:.8rem; } .proof-bar>div:last-child { border-bottom:0; } .hr-section-heading { grid-template-columns:30px 1fr; } .section-link { grid-column:2; } .work-feature-bottom { grid-template-columns:1fr 1fr; } .work-feature-bottom .text-link { text-align:left; grid-column:1/-1; } .experience-item { grid-template-columns:1fr; gap:.5rem; } .featured-home-metrics { padding:1.5rem 2.3rem; } }
+@media (max-width:800px) { .fit-grid,.process-grid,.project-detail-grid,.hiring-grid,.narrative-grid { grid-template-columns:1fr; } .portfolio-signals { gap:.8rem 1.2rem; } .fit-section { margin-left:-1rem; margin-right:-1rem; padding-left:1rem; padding-right:1rem; } }
