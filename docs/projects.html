@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Projects – Zihui Yao</title>
+<title>Work – Zihui Yao</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -33,8 +33,6 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -72,65 +70,7 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-title','listing-description','listing-date',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-title","listing-author","listing-date","listing-image","listing-description"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -162,7 +102,7 @@ window.Quarto = {
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./about.html"> 
-<span class="menu-text">About</span></a>
+<span class="menu-text">Profile</span></a>
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
@@ -196,15 +136,13 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
-    </div>
+    
 <!-- main -->
 <main class="content column-page" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Projects</h1>
+<h1 class="title">Work</h1>
 </div>
 
 
@@ -221,153 +159,124 @@ window.Quarto = {
 </header>
 
 
-<div class="page-heading project-heading">
+<div class="page-heading work-heading">
 <p class="eyebrow">
-Selected work &amp; analysis notes
+Portfolio
 </p>
 <h1>
-Work that connects evidence to action.
+Selected work, organized by how it creates value.
 </h1>
 <p class="page-lede">
-A focused portfolio of applied AI, predictive modeling, financial analysis, and experiments.
+Start with the client case study, then explore the analytical methods and supporting work behind it.
 </p>
 </div>
-<div id="realtor-capstone" class="project-feature-banner project-feature-client">
+<section class="work-group work-group-primary">
+<div class="work-group-heading">
+<span class="section-number">01</span>
 <div>
-<span class="tag tag-accent">Featured case study</span>
+<p class="eyebrow">
+Core project
+</p>
 <h2 class="anchored">
-Realtor.com · Apple Search Ads Optimization
+Realtor.com × UCSD MSBA
 </h2>
 <p>
-A backtest-validated keyword bid optimization framework, dashboard, and weekly operating workflow.
+Growth analytics, paid search optimization, dashboard product, and backtesting.
 </p>
 </div>
-<p><a class="button button-primary" href="posts/realtor-capstone/index.html">Open project <span>↗</span></a></p>
 </div>
-<div class="project-secondary-grid">
-<a class="mini-project" href="posts/hw3/hw3.html"><span class="eyebrow">Statistical modeling</span>
+<a class="work-feature-card" href="posts/realtor-capstone/index.html">
+<div class="work-feature-top">
+<span class="tag tag-accent">Featured case study</span><span>Python · SQL · Streamlit · Plotly</span>
+</div>
+<h3 class="anchored">
+Apple Search Ads Optimization
+</h3>
+<p>
+Designed a keyword bid optimization framework that translated performance signals into explainable recommendations and a weekly operating workflow.
+</p>
+<div class="work-feature-bottom">
+<span><strong>$85.7K</strong> monthly spend</span><span><strong>88</strong> recommendations</span><span><strong>59</strong> events backtested</span><span class="text-link">Read case study ↗</span>
+</div>
+</a>
+</section>
+<section class="work-group">
+<div class="work-group-heading">
+<span class="section-number">02</span>
+<div>
+<p class="eyebrow">
+Supporting work
+</p>
+<h2 class="anchored">
+Methods I use to reason with data.
+</h2>
+<p>
+These projects show statistical depth, model interpretation, and comfort with uncertainty.
+</p>
+</div>
+</div>
+<div class="supporting-grid">
+<a class="supporting-card" href="posts/hw3/hw3.html"><span class="eyebrow">Statistical modeling</span>
 <h3 class="anchored">
 Poisson regression &amp; causal reasoning
 </h3>
 <p>
 Maximum likelihood estimation, model interpretation, and the limits of observational comparisons.
 </p>
-<span class="text-link">Read analysis ↗</span></a> <a class="mini-project" href="posts/hw4-maxdiff/index.html"><span class="eyebrow">Preference modeling</span>
+<span class="text-link">Read analysis ↗</span></a><a class="supporting-card" href="posts/hw4-maxdiff/index.html"><span class="eyebrow">Preference modeling</span>
 <h3 class="anchored">
 MaxDiff, MNL, and Bayesian estimation
 </h3>
 <p>
 Comparing counts, maximum likelihood, and MCMC to understand preference strength and uncertainty.
 </p>
-<span class="text-link">Read analysis ↗</span></a> <a class="mini-project" href="posts/realtor-capstone/index.html"><span class="eyebrow">Client case study</span>
+<span class="text-link">Read analysis ↗</span></a><a class="supporting-card" href="posts/hw1/index.html"><span class="eyebrow">Experimentation</span>
 <h3 class="anchored">
-Realtor.com Apple Search Ads
+A/B testing a call to action
 </h3>
 <p>
-A detailed capstone case study on keyword bid optimization and decision support.
+Simulation-based exploration of frequentist inference, bootstrapping, power, and practical experimentation.
 </p>
-</a><p><a class="mini-project" href="posts/realtor-capstone/index.html"><span class="text-link">Read case study ↗</span></a></p>
+<span class="text-link">Read analysis ↗</span></a>
 </div>
+</section>
+<section class="work-group work-group-compact">
+<div class="work-group-heading">
+<span class="section-number">03</span>
+<div>
+<p class="eyebrow">
+Additional experience
+</p>
+<h2 class="anchored">
+Domain experience beyond the featured project.
+</h2>
+</div>
+</div>
+<div class="compact-experience-grid">
+<div>
+<strong>Predictive pricing</strong>
+<p>
+Feature engineering and regression on 2,000+ Airbnb listings to support leasing strategy and pricing decisions.
+</p>
+</div>
+<div>
+<strong>Consumer demand</strong>
+<p>
+Identified three consumer segments and quantified addressable market from 500+ survey responses.
+</p>
+</div>
+<div>
+<strong>Financial analysis</strong>
+<p>
+Ratio analysis, cash flow modeling, real-estate portfolio verification, and M&amp;A / mortgage valuation support.
+</p>
+</div>
+</div>
+</section>
 
 
 
-
-<div class="quarto-listing quarto-listing-container-grid" id="listing-listing">
-<div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-listing-date-sort="1786377600000" data-listing-file-modified-sort="1776912472575" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="13" data-listing-word-count-sort="2500">
-<a href="./posts/hw2/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Replication of Angrist and Lavy (1999)
-</h5>
-<div class="card-text listing-description delink">
-Does reducing class size improve student learning? This question has major implications for education policy, yet answering it is surprisingly difficult. Schools with…
-</div>
-<div class="card-attribution card-text-small end">
-<div class="listing-date">
-Aug 11, 2026
-</div>
-</div>
-</div>
-</div></a>
-</div>
-<div class="g-col-1" data-index="1" data-listing-date-sort="1786377600000" data-listing-file-modified-sort="1779069079472" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="13" data-listing-word-count-sort="2515">
-<a href="./posts/hw3/hw3.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Does Blueprinty’s Software Actually Help Win Patents?
-</h5>
-<div class="card-text listing-description delink">
-Blueprinty is a small software company that builds tools specifically designed to help engineering firms prepare and submit patent applications to the US Patent Office.…<em></em>
-</div>
-<div class="card-attribution card-text-small end">
-<div class="listing-date">
-Aug 11, 2026
-</div>
-</div>
-</div>
-</div></a>
-</div>
-<div class="g-col-1" data-index="2" data-listing-date-sort="1786377600000" data-listing-file-modified-sort="1779925429674" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="20" data-listing-word-count-sort="3930">
-<a href="./posts/hw4-maxdiff/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-MaxDiff Analysis of MSBA Class Preferences
-</h5>
-<div class="card-text listing-description delink">
-MaxDiff (also called <em>Best-Worst Scaling</em>) is a survey methodology for measuring how strongly people prefer one item over another. On each screen of the survey, the respondent…<em></em><em></em>
-</div>
-<div class="card-attribution card-text-small end">
-<div class="listing-date">
-Aug 11, 2026
-</div>
-</div>
-</div>
-</div></a>
-</div>
-<div class="g-col-1" data-index="3" data-listing-date-sort="1786377600000" data-listing-file-modified-sort="1777434435206" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="14" data-listing-word-count-sort="2744">
-<a href="./posts/hw1/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-A/B Testing a Call to Action
-</h5>
-<div class="card-text listing-description delink">
-Imagine you run a website with a landing page that invites visitors to subscribe to your newsletter. The page features a prominent “call to action” (CTA) — a short phrase…<strong></strong><strong></strong>
-</div>
-<div class="card-attribution card-text-small end">
-<div class="listing-date">
-Aug 11, 2026
-</div>
-</div>
-</div>
-</div></a>
-</div>
-<div class="g-col-1" data-index="4" data-listing-date-sort="1777564800000" data-listing-file-modified-sort="1786427126788" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1004">
-<a href="./posts/realtor-capstone/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Realtor.com · Apple Search Ads Optimization
-</h5>
-<div class="card-text listing-description delink">
-
-We built a data-driven Apple Search Ads workflow that turns keyword-level signals into explainable bid recommendations, a strategist dashboard, and a backtest against real…
-</div>
-<div class="card-attribution card-text-small end">
-<div class="listing-date">
-May 1, 2026
-</div>
-</div>
-</div>
-</div></a>
-</div>
-</div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

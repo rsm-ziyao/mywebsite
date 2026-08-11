@@ -11,7 +11,7 @@ website:
       - href: projects.qmd
         text: Work
       - href: about.qmd
-        text: About
+        text: Profile
     right:
       - text: Resume
         href: assets/Zihui_Yao_Resume.pdf
@@ -29,4 +29,4 @@ format:
   html:
     theme: cosmo
     css: styles.css
-    toc: true
+    toc: false

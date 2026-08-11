@@ -1,27 +1,18 @@
 ---
-title: "Projects"
+title: "Work"
 page-layout: full
-listing:
-  contents: posts
-  type: grid
-  sort: "date desc"
-  fields: [title, description, date]
-  page-size: 12
 ---
 
-<div class="page-heading project-heading">
-<p class="eyebrow">Selected work & analysis notes</p>
-<h1>Work that connects evidence to action.</h1>
-<p class="page-lede">A focused portfolio of applied AI, predictive modeling, financial analysis, and experiments.</p>
-</div>
+<div class="page-heading work-heading"><p class="eyebrow">Portfolio</p><h1>Selected work, organized by how it creates value.</h1><p class="page-lede">Start with the client case study, then explore the analytical methods and supporting work behind it.</p></div>
 
-<div id="realtor-capstone" class="project-feature-banner project-feature-client">
-<div><span class="tag tag-accent">Featured case study</span><h2>Realtor.com · Apple Search Ads Optimization</h2><p>A backtest-validated keyword bid optimization framework, dashboard, and weekly operating workflow.</p></div>
-<a class="button button-primary" href="posts/realtor-capstone/index.html">Open project <span>↗</span></a>
-</div>
+<section class="work-group work-group-primary">
+<div class="work-group-heading"><span class="section-number">01</span><div><p class="eyebrow">Core project</p><h2>Realtor.com × UCSD MSBA</h2><p>Growth analytics, paid search optimization, dashboard product, and backtesting.</p></div></div>
+<a class="work-feature-card" href="posts/realtor-capstone/index.html"><div class="work-feature-top"><span class="tag tag-accent">Featured case study</span><span>Python · SQL · Streamlit · Plotly</span></div><h3>Apple Search Ads Optimization</h3><p>Designed a keyword bid optimization framework that translated performance signals into explainable recommendations and a weekly operating workflow.</p><div class="work-feature-bottom"><span><strong>$85.7K</strong> monthly spend</span><span><strong>88</strong> recommendations</span><span><strong>59</strong> events backtested</span><span class="text-link">Read case study ↗</span></div></a>
+</section>
 
-<div class="project-secondary-grid">
-<a class="mini-project" href="posts/hw3/hw3.html"><span class="eyebrow">Statistical modeling</span><h3>Poisson regression & causal reasoning</h3><p>Maximum likelihood estimation, model interpretation, and the limits of observational comparisons.</p><span class="text-link">Read analysis ↗</span></a>
-<a class="mini-project" href="posts/hw4-maxdiff/index.html"><span class="eyebrow">Preference modeling</span><h3>MaxDiff, MNL, and Bayesian estimation</h3><p>Comparing counts, maximum likelihood, and MCMC to understand preference strength and uncertainty.</p><span class="text-link">Read analysis ↗</span></a>
-<a class="mini-project" href="posts/realtor-capstone/index.html"><span class="eyebrow">Client case study</span><h3>Realtor.com Apple Search Ads</h3><p>A detailed capstone case study on keyword bid optimization and decision support.</p><span class="text-link">Read case study ↗</span></a>
-</div>
+<section class="work-group">
+<div class="work-group-heading"><span class="section-number">02</span><div><p class="eyebrow">Supporting work</p><h2>Methods I use to reason with data.</h2><p>These projects show statistical depth, model interpretation, and comfort with uncertainty.</p></div></div>
+<div class="supporting-grid"><a class="supporting-card" href="posts/hw3/hw3.html"><span class="eyebrow">Statistical modeling</span><h3>Poisson regression & causal reasoning</h3><p>Maximum likelihood estimation, model interpretation, and the limits of observational comparisons.</p><span class="text-link">Read analysis ↗</span></a><a class="supporting-card" href="posts/hw4-maxdiff/index.html"><span class="eyebrow">Preference modeling</span><h3>MaxDiff, MNL, and Bayesian estimation</h3><p>Comparing counts, maximum likelihood, and MCMC to understand preference strength and uncertainty.</p><span class="text-link">Read analysis ↗</span></a><a class="supporting-card" href="posts/hw1/index.html"><span class="eyebrow">Experimentation</span><h3>A/B testing a call to action</h3><p>Simulation-based exploration of frequentist inference, bootstrapping, power, and practical experimentation.</p><span class="text-link">Read analysis ↗</span></a></div>
+</section>
+
+<section class="work-group work-group-compact"><div class="work-group-heading"><span class="section-number">03</span><div><p class="eyebrow">Additional experience</p><h2>Domain experience beyond the featured project.</h2></div></div><div class="compact-experience-grid"><div><strong>Predictive pricing</strong><p>Feature engineering and regression on 2,000+ Airbnb listings to support leasing strategy and pricing decisions.</p></div><div><strong>Consumer demand</strong><p>Identified three consumer segments and quantified addressable market from 500+ survey responses.</p></div><div><strong>Financial analysis</strong><p>Ratio analysis, cash flow modeling, real-estate portfolio verification, and M&A / mortgage valuation support.</p></div></div></section>
